@@ -1,0 +1,15 @@
+# build files.
+build/
+dist/
+
+# dependencies.
+node_modules/
+
+# project files.
+.idea/
+.vscode/
+
+# cache and log files.
+*.DS_Store
+lerna-debug.log
+yarn-error.log
