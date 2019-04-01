@@ -6,11 +6,12 @@ export const buildDefinition = (type, payload) => {
 }
 export const object = payload => buildDefinition("object", payload)
 export const array = payload => buildDefinition("array", payload)
+export const boolean = payload => buildDefinition("boolean", payload)
 export const string = payload => buildDefinition("string", payload)
 export const number = payload => buildDefinition("number", payload)
-export const boolean = payload => buildDefinition("boolean", payload)
+export const integer = payload => buildDefinition("integer", payload)
 
-export const schema = object({
+export const taskSchema = object({
   title: "A list of tasks",
   required: ["title"],
   properties: {
@@ -37,6 +38,39 @@ export const schema = object({
         },
       }),
     }),
+  },
+})
+
+export const orderSchema = object({
+  $schema: "http://json-schema.org/schema#",
+  properties: {
+    orderNumber: string(),
+    orderDate: string(),
+    customer: object({
+      properties: {
+        customerNumber: string(),
+        firstName: string(),
+        lastName: string(),
+      },
+    }),
+    orderItems: array({
+      items: object({
+        properties: {
+          productNumber: string(),
+          quantity: integer(),
+          unitPrice: integer(),
+        },
+      }),
+    }),
+    shippingAddress: object({
+      properties: {
+        street: string(),
+        city: string(),
+        country: string(),
+        zip: string(),
+      },
+    }),
+    totalPrice: number(),
   },
 })
 

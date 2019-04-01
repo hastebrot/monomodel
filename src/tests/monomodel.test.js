@@ -1,8 +1,8 @@
-import { schema, fetchSchemaPaths } from "./fixture"
+import { taskSchema, fetchSchemaPaths } from "./fixture"
 
 describe("monomodel", () => {
   test("schema", () => {
-    console.log("schema", schema)
-    console.log("schema paths", fetchSchemaPaths(schema))
+    console.log("schema", taskSchema)
+    console.log("schema paths", fetchSchemaPaths(taskSchema))
   })
 })
