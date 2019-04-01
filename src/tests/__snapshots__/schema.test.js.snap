@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`schema can render react component 1`] = `
+<div>
+  foo
+</div>
+`;
+
+exports[`schema can walk json schema 1`] = `
+Array [
+  Object {
+    "fullPath": Array [],
+    "parentPath": Array [],
+    "path": Array [],
+    "type": "object",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderNumber",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "orderNumber",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderDate",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "orderDate",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "customer",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "customer",
+    ],
+    "type": "object",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "customer",
+      "properties",
+      "customerNumber",
+    ],
+    "parentPath": Array [
+      "properties",
+      "customer",
+    ],
+    "path": Array [
+      "properties",
+      "customerNumber",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "customer",
+      "properties",
+      "firstName",
+    ],
+    "parentPath": Array [
+      "properties",
+      "customer",
+    ],
+    "path": Array [
+      "properties",
+      "firstName",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "customer",
+      "properties",
+      "lastName",
+    ],
+    "parentPath": Array [
+      "properties",
+      "customer",
+    ],
+    "path": Array [
+      "properties",
+      "lastName",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderItems",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "orderItems",
+    ],
+    "type": "array",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+    ],
+    "parentPath": Array [
+      "properties",
+      "orderItems",
+    ],
+    "path": Array [
+      "items",
+    ],
+    "type": "object",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+      "properties",
+      "productNumber",
+    ],
+    "parentPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+    ],
+    "path": Array [
+      "properties",
+      "productNumber",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+      "properties",
+      "quantity",
+    ],
+    "parentPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+    ],
+    "path": Array [
+      "properties",
+      "quantity",
+    ],
+    "type": "integer",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+      "properties",
+      "unitPrice",
+    ],
+    "parentPath": Array [
+      "properties",
+      "orderItems",
+      "items",
+    ],
+    "path": Array [
+      "properties",
+      "unitPrice",
+    ],
+    "type": "integer",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "type": "object",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "shippingAddress",
+      "properties",
+      "street",
+    ],
+    "parentPath": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "path": Array [
+      "properties",
+      "street",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "shippingAddress",
+      "properties",
+      "city",
+    ],
+    "parentPath": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "path": Array [
+      "properties",
+      "city",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "shippingAddress",
+      "properties",
+      "country",
+    ],
+    "parentPath": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "path": Array [
+      "properties",
+      "country",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "shippingAddress",
+      "properties",
+      "zip",
+    ],
+    "parentPath": Array [
+      "properties",
+      "shippingAddress",
+    ],
+    "path": Array [
+      "properties",
+      "zip",
+    ],
+    "type": "string",
+  },
+  Object {
+    "fullPath": Array [
+      "properties",
+      "totalPrice",
+    ],
+    "parentPath": Array [],
+    "path": Array [
+      "properties",
+      "totalPrice",
+    ],
+    "type": "number",
+  },
+]
+`;
