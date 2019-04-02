@@ -102,14 +102,16 @@ export const buildModel = schema => {
         parentPointer: null,
         path: null,
         index: 0,
+        indexCounter: 0,
       }
     } else {
       registry[pointer] = {
         parentPointer,
         path,
-        index: registry[parentPointer].index,
+        index: registry[parentPointer].indexCounter,
+        indexCounter: 0,
       }
-      registry[parentPointer].index += 1
+      registry[parentPointer].indexCounter += 1
     }
 
     const result = []
