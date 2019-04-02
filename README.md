@@ -14,6 +14,12 @@ Run development webserver for guide.
 $ yarn guide:start
 ```
 
+Run test suites for site.
+
+```console
+$ yarn site:test
+```
+
 ## PLANFILE
 
 ### 02 Apr 2019 / Benjamin

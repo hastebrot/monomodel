@@ -1,7 +1,6 @@
 import { concat, get, set, pick } from "lodash"
-import produce from "immer"
 import { schemaWalk } from "@cloudflare/json-schema-walker"
-import { object, string, fieldset, field } from "./fixture"
+import { object, array, string, integer, fieldset, field } from "./fixture"
 
 describe("monomodel", () => {
   test("schema 1", () => {
@@ -79,6 +78,81 @@ describe("monomodel", () => {
             }),
             field("string", {
               pointer: "#/properties/customer/properties/lastName",
+            }),
+          ],
+        }),
+      ],
+    })
+    // expect:
+    expect(buildModel(schema)).toEqual(model)
+  })
+
+  test("schema 4", () => {
+    // given:
+    const schema = object({
+      title: "order",
+      properties: {
+        orderNumber: string(),
+        orderDate: string(),
+        customer: object({
+          properties: {
+            customerNumber: string(),
+            firstName: string(),
+            lastName: string(),
+          },
+        }),
+        orderItems: array({
+          items: object({
+            properties: {
+              productNumber: string(),
+              quantity: integer(),
+              unitPrice: integer(),
+            },
+          }),
+        }),
+      },
+    })
+    const model = fieldset("object", {
+      pointer: "#/",
+      title: "order",
+      children: [
+        field("string", {
+          pointer: "#/properties/orderNumber",
+        }),
+        field("string", {
+          pointer: "#/properties/orderDate",
+        }),
+        fieldset("object", {
+          pointer: "#/properties/customer",
+          children: [
+            field("string", {
+              pointer: "#/properties/customer/properties/customerNumber",
+            }),
+            field("string", {
+              pointer: "#/properties/customer/properties/firstName",
+            }),
+            field("string", {
+              pointer: "#/properties/customer/properties/lastName",
+            }),
+          ],
+        }),
+        fieldset("array", {
+          pointer: "#/properties/orderItems",
+          children: [
+            fieldset("object", {
+              pointer: "#/properties/orderItems/items",
+              children: [
+                field("string", {
+                  pointer:
+                    "#/properties/orderItems/items/properties/productNumber",
+                }),
+                field("integer", {
+                  pointer: "#/properties/orderItems/items/properties/quantity",
+                }),
+                field("integer", {
+                  pointer: "#/properties/orderItems/items/properties/unitPrice",
+                }),
+              ],
             }),
           ],
         }),
