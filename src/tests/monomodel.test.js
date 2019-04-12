@@ -1,6 +1,7 @@
 import { concat, get, set, pick } from "lodash"
 import { schemaWalk } from "@cloudflare/json-schema-walker"
 import { object, array, string, integer, fieldset, field } from "./fixture"
+import { pretty1 } from "../utils"
 
 describe("monomodel", () => {
   test("schema 1", () => {
@@ -87,7 +88,7 @@ describe("monomodel", () => {
     expect(buildModel(schema)).toEqual(model)
   })
 
-  test("schema 4", () => {
+  test.only("schema 4", () => {
     // given:
     const schema = object({
       title: "order",
@@ -176,26 +177,34 @@ export const buildModel = schema => {
         parentPointer: null,
         path: null,
         index: 0,
-        indexCounter: 0,
+        nextChildIndex: 0,
       }
     } else {
       registry[pointer] = {
         parentPointer,
         path,
-        index: registry[parentPointer].indexCounter,
-        indexCounter: 0,
+        index: registry[parentPointer].nextChildIndex,
+        nextChildIndex: 0,
       }
-      registry[parentPointer].indexCounter += 1
+      registry[parentPointer].nextChildIndex += 1
     }
 
-    const result = []
-    let current = registry[pointer]
-    result.unshift(current.path ? ["children", current.index] : [])
-    while (current.parentPointer) {
-      current = registry[current.parentPointer]
-      result.unshift(current.path ? ["children", current.index] : [])
+    const rewritePathSegment = ({ path, index }) => {
+      // return path || []
+      return path ? ["children", index] : []
     }
-    const objectPath = toPath(concat(...result))
+
+    const objectPathSegments = []
+    let currentEntry = registry[pointer]
+    while (currentEntry) {
+      objectPathSegments.unshift(rewritePathSegment(currentEntry))
+      currentEntry = registry[currentEntry.parentPointer]
+    }
+
+    // console.log(pretty1([parentPath, path]))
+    // console.log(pretty1(objectPathSegments))
+
+    const objectPath = toObjectPath(concat(...objectPathSegments))
     const rootObjectPath = objectPath ? "root." + objectPath : "root"
 
     if (type === "object" || type === "array") {
@@ -211,10 +220,10 @@ export const buildModel = schema => {
   return model.root
 }
 
-export const toPath = pathSegments => {
-  return pathSegments.join(".")
-}
-
 export const toPointer = pathSegments => {
   return `#/${pathSegments.join("/")}`
+}
+
+export const toObjectPath = pathSegments => {
+  return pathSegments.join(".")
 }
