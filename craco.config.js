@@ -7,6 +7,9 @@ module.exports = function({ env, paths }) {
       open: false,
     },
     babel: babel,
+    eslint: {
+      enable: false,
+    },
     jest: {
       configure: {
         testEnvironment: "node",

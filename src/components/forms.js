@@ -105,9 +105,9 @@ export const defaultFormContext = (modifyFormContext = context => context) => {
   return modifyFormContext(context)
 }
 
-export const defaultLocalTheme = (modifyLocalTheme = theme => theme) => {
-  return modifyLocalTheme(localTheme)
-}
+// export const defaultLocalTheme = (modifyLocalTheme = theme => theme) => {
+//   return modifyLocalTheme(localTheme)
+// }
 
 //------------------------------------------------------------------------------
 // FORM MODEL.
