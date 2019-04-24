@@ -117,7 +117,6 @@ export const localTheme = {
   },
   Heading: {
     h2: css`
-      color: black;
       font-size: 20px;
       line-height: unset;
     `,

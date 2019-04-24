@@ -15,7 +15,7 @@ stories.addDecorator(story => (
 ))
 
 stories.add("form editor", () => (
-  <Box padding="major-3" background="#ffffff" border="1px solid #cccccc">
+  <Box padding="0" background="#ffffff" border="1px solid #cccccc">
     <EditorForm />
   </Box>
 ))
