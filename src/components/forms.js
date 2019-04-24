@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react"
-import { Box, Text, Code, ThemeProvider } from "fannypack"
+import { Box, Text, Code, ThemeProvider, css } from "fannypack"
 import { compact } from "lodash-es"
 
 //------------------------------------------------------------------------------
@@ -105,9 +105,33 @@ export const defaultFormContext = (modifyFormContext = context => context) => {
   return modifyFormContext(context)
 }
 
-// export const defaultLocalTheme = (modifyLocalTheme = theme => theme) => {
-//   return modifyLocalTheme(localTheme)
-// }
+export const defaultLocalTheme = (modifyLocalTheme = theme => theme) => {
+  return modifyLocalTheme(localTheme)
+}
+
+export const localTheme = {
+  Pane: {
+    base: css`
+      border-radius: 0;
+    `
+  },
+  Heading: {
+    h2: css`
+      color: black;
+      font-size: 20px;
+      line-height: unset;
+    `,
+  },
+  Input: {
+    base: css`
+      border: 1px solid #cccccc !important;
+      border-radius: 0;
+      box-shadow: unset !important;
+      height: 50px;
+      padding: 0 15px;
+    `
+  }
+}
 
 //------------------------------------------------------------------------------
 // FORM MODEL.

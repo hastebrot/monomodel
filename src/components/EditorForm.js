@@ -1,11 +1,22 @@
 import React, { Fragment, useState, useContext } from "react"
 import { produce } from "immer"
-import { Box, Flex, Set, Group, Button, Label, Input, Pane } from "fannypack"
+import {
+  Box,
+  Flex,
+  Set,
+  Group,
+  Button,
+  Label,
+  Heading,
+  Input,
+  Pane,
+} from "fannypack"
 import {
   FormRoot,
   FormContext,
   ContextProvider,
   defaultFormContext,
+  defaultLocalTheme,
   simpleFormModel,
 } from "./forms"
 import { PrettyCode } from "../utils"
@@ -15,6 +26,7 @@ import chroma from "chroma-js"
 
 export const Form = () => {
   const [formModel, setFormModel] = useState(simpleFormModel())
+  const localTheme = defaultLocalTheme()
   const formContext = defaultFormContext(
     produce(context => {
       context.registry.FormPart = EditorFormPart
@@ -24,7 +36,7 @@ export const Form = () => {
     })
   )
   return (
-    <ContextProvider formContext={formContext}>
+    <ContextProvider formContext={formContext} localTheme={localTheme}>
       <FormRoot rootModel={formModel} />
     </ContextProvider>
   )
@@ -45,6 +57,11 @@ export const DragBox = ({ children, name, ...otherProps }) => {
 const onDragStart = (event, path) => {
   console.log("drag start:", path, event.currentTarget)
   event.dataTransfer.setData("path", path)
+
+  const emptyImage = new Image()
+  emptyImage.src =
+    "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
+  event.dataTransfer.setDragImage(emptyImage, 0, 0)
 }
 
 const onDragOver = (event, path) => {
@@ -82,18 +99,12 @@ export const EditorFormPart = ({ node, path, children }) => {
         onDragOver={onDragOver}
         onDrop={event => onDrop(event, path)}
       >
-        <Pane padding="major-2" border>
-          <Box
-            marginBottom="major-1"
-            padding="major-1"
-            background={calculateColor(path)}
-          >
+        <Pane>
+          <Box marginBottom="major-2">
             <Flex row>
-              <Label flex="1">{node.pointer}</Label>
-              {/* <Group>
-                <Button size="small">1-column</Button>
-                <Button size="small">2-column</Button>
-              </Group> */}
+              <Heading use="h2" flex="1">
+                {node.pointer}
+              </Heading>
             </Flex>
           </Box>
           <Set isVertical isFilled spacing="major-2">
@@ -110,12 +121,6 @@ export const EditorFormPart = ({ node, path, children }) => {
         onMouseOver={event => onMouseOver(event, path)}
         onDragStart={event => onDragStart(event, path)}
       >
-        <Box
-          marginBottom="major-1"
-          padding="major-1"
-          background={calculateColor(path)}
-        />
-
         <Input defaultValue={node.pointer} />
       </DragBox>
     )
