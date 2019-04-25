@@ -40,7 +40,7 @@ export const buildFlatModel = schema => {
 
     const objectPathSegments = []
     objectPathSegments.push(`children[${registry.fieldsetIndex}]`)
-    if (type !== "object" && type !== "array") {
+    if (!isFieldsetType(type)) {
       objectPathSegments.push(`children[${registry.fieldIndex}]`)
     }
     const objectPath = toObjectPath(concat(...objectPathSegments))

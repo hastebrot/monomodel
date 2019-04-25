@@ -61,55 +61,54 @@ const rightColumn = "2 / span 1"
 
 const createFormPrefs = () => {
   const headerStyle = {
-    // colorHeader: "white",
-    // backgroundColorHeader: "#002245",
-    // // backgroundColorHeader: "#f7f7f8",
+    header: {
+      color: "#ffffff",
+      backgroundColor: "#002245",
+    },
   }
-  const contentStyle = {
-    // backgroundColorContent: "#fbd9d2",
+  const bodyStyle = {
+    body: {
+      backgroundColor: "#fbd9d2",
+    },
   }
   const editStyle = {
-    backgroundColorHeader: "#fbd9d2",
-    backgroundColorContent: "#fbd9d2",
+    header: {
+      backgroundColor: "#fbd9d2",
+    },
+    body: {
+      backgroundColor: "#fbd9d2",
+    },
   }
   const formPrefs = {
-    defaultActive: true,
-    // headerFontSizes: ["36px", "30px", "24px", "20px"],
+    options: {
+      // fontSizesHeader: ["36px", "30px", "24px", "20px"],
+    },
     "#/": {
-      ...headerStyle,
+      // ...headerStyle,
     },
     "#/properties/customer": {
       gridTemplateColumns: parentColumns,
-      ...headerStyle,
-      ...contentStyle,
-      ...editStyle,
-      active: true,
-      // selected: true,
+      // ...editStyle,
     },
     "#/properties/customer/properties/customerNumber": {
       gridColumn: halfColumn,
-      active: true,
     },
     "#/properties/customer/properties/firstName": {
       gridColumn: leftColumn,
-      active: true,
     },
     "#/properties/customer/properties/lastName": {
       gridColumn: halfColumn,
-      active: true,
     },
     "#/properties/orderItems": {
-      ...headerStyle,
+      // ...headerStyle,
     },
     "#/properties/orderItems/items": {
       gridTemplateColumns: parentColumns,
-      ...headerStyle,
-      ...contentStyle,
+      // ...headerStyle,
     },
     "#/properties/shippingAddress": {
       gridTemplateColumns: parentColumns,
-      ...headerStyle,
-      ...contentStyle,
+      // ...headerStyle,
     },
   }
   return formPrefs
