@@ -19,7 +19,11 @@ import {
 // import { taskSchema, taskModel } from "../library/model"
 // import { PrettyCode } from "../library/utils"
 
-export default ({ model = simpleFormModel(), prefs = {}, ...otherProps }) => {
+export default ({
+  model = simpleFormModel(),
+  prefs = { options: {} },
+  ...otherProps
+}) => {
   const [formModel, setFormModel] = useState(model)
   const [formPrefs, setFormPrefs] = useState(prefs)
   const localTheme = defaultLocalTheme()
@@ -63,6 +67,7 @@ export const EditorFormPart = ({ node, path, children }) => {
   const isSelected = path === context.formPrefs.selectedFieldset
   const isFieldSelected = path.includes(context.formPrefs.selectedFieldset)
   const isActive = context.formPrefs.selectedFieldset ? isFieldSelected : true
+  const passiveOpacity = "0.5"
 
   const pointerPrefs = {
     ...context.formPrefs[node.pointer],
@@ -134,7 +139,7 @@ export const EditorFormPart = ({ node, path, children }) => {
               {...rowPadding("16px")}
               color={get(pointerPrefs, "header.color")}
               backgroundColor={get(pointerPrefs, "header.backgroundColor")}
-              opacity={!isActive ? "0.25" : null}
+              opacity={!isActive ? passiveOpacity : null}
               pointerEvents={!isActive ? "none" : null}
               paddingBottom="8px"
             >
@@ -175,7 +180,7 @@ export const EditorFormPart = ({ node, path, children }) => {
       >
         <Box
           paddingBottom="16px"
-          opacity={!isActive ? "0.25" : null}
+          opacity={!isActive ? passiveOpacity : null}
           pointerEvents={!isActive ? "none" : null}
         >
           <InputField

@@ -179,6 +179,7 @@ export const simpleFormModel = () => {
       }),
       fieldset("object", {
         pointer: "#/properties/customer",
+        title: "customer",
         children: [
           field("string", {
             pointer: "#/properties/customer/properties/customerNumber",

@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
-
 import FormEditor from "../components/FormEditor"
 import { buildModel, buildFlatModel } from "../library/builder"
 import { object, array, string, integer, number } from "../library/model"
@@ -21,9 +20,9 @@ stories.addDecorator(story => (
   </ThemeProvider>
 ))
 
-stories.add("nested fieldsets", () => {
+stories.add("flat fieldsets", () => {
   const formPrefs = createFormPrefs()
-  const formModel = buildModel(orderSchema)
+  const formModel = buildFlatModel(orderSchema)
   return (
     <Box
       marginLeft="major-4"
@@ -37,9 +36,9 @@ stories.add("nested fieldsets", () => {
   )
 })
 
-stories.add("flat fieldsets", () => {
+stories.add("nested fieldsets", () => {
   const formPrefs = createFormPrefs()
-  const formModel = buildFlatModel(orderSchema)
+  const formModel = buildModel(orderSchema)
   return (
     <Box
       marginLeft="major-4"
