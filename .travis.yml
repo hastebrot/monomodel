@@ -1,0 +1,27 @@
+# use ubuntu linux.
+os: linux
+dist: trusty
+
+# run in container.
+sudo: false
+
+# use nodejs environment.
+language: node_js
+node_js: "10"
+
+# install stable chrome and firefox.
+addons:
+  chrome: stable
+  firefox: latest
+
+# run yarn install.
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
+  - yarn install
+
+# run yarn build and test scripts.
+script:
+  - yarn site:test
+  - yarn guide:build
