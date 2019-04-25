@@ -19,7 +19,11 @@ import {
 // import { taskSchema, taskModel } from "../library/model"
 // import { PrettyCode } from "../library/utils"
 
-export default ({ model = simpleFormModel(), prefs = {}, ...otherProps }) => {
+export default ({
+  model = simpleFormModel(),
+  prefs = { options: {} },
+  ...otherProps
+}) => {
   const [formModel, setFormModel] = useState(model)
   const [formPrefs, setFormPrefs] = useState(prefs)
   const localTheme = defaultLocalTheme()
