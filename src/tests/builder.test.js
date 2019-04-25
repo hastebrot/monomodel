@@ -1,8 +1,8 @@
-import { buildModel, toPointer, toObjectPath } from "./monomodel"
-import { object, array, string, integer, fieldset, field } from "./fixture"
-import { pretty1 } from "../utils"
+import { buildModel, toPointer, toObjectPath } from "../library/builder"
+import { object, array, string, integer, fieldset, field } from "../library/model"
+import { pretty1 } from "../library/utils"
 
-describe("monomodel", () => {
+describe("builder", () => {
   test("schema 1", () => {
     // given:
     const schema = object({

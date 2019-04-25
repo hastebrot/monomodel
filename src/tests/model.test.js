@@ -1,8 +1,8 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import { fetchSchemaPaths, orderSchema } from "./fixture"
+import { fetchSchemaPaths, orderSchema } from "../library/model"
 
-describe("schema", () => {
+describe("model", () => {
   it("can render react component", () => {
     // when:
     const component = renderer.create(<div>foo</div>)

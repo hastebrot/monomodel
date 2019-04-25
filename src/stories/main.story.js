@@ -1,10 +1,10 @@
 import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
-import EditorForm from "../components/EditorForm"
-import EditorJsonSchema from "../components/EditorJsonSchema"
+import FormEditor from "../components/FormEditor"
+import SchemaEditor from "../components/SchemaEditor"
 
-const stories = storiesOf("Components/Index", module)
+const stories = storiesOf("components/editor", module)
 
 stories.addDecorator(story => (
   <ThemeProvider>
@@ -16,12 +16,12 @@ stories.addDecorator(story => (
 
 stories.add("form editor", () => (
   <Box padding="0" background="#ffffff" border="1px solid #cccccc">
-    <EditorForm />
+    <FormEditor />
   </Box>
 ))
 
-stories.add("json schema editor", () => (
+stories.add("schema editor", () => (
   <Box padding="major-3" background="#ffffff" border="1px solid #cccccc">
-    <EditorJsonSchema />
+    <SchemaEditor />
   </Box>
 ))

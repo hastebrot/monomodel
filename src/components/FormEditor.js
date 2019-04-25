@@ -1,17 +1,6 @@
 import React, { Fragment, useState, useContext } from "react"
 import { produce } from "immer"
 import { Box, Flex, Heading, Input } from "fannypack"
-import {
-  FormRoot,
-  FormContext,
-  ContextProvider,
-  defaultFormContext,
-  defaultLocalTheme,
-  simpleFormModel,
-} from "./forms"
-// import { PrettyCode } from "../utils"
-// import { taskSchema, taskModel } from "../tests/fixture"
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import chroma from "chroma-js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -20,12 +9,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import "typeface-open-sans"
 import "typeface-open-sans-condensed"
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import {
+  FormRoot,
+  FormContext,
+  ContextProvider,
+  defaultFormContext,
+  defaultLocalTheme,
+  simpleFormModel,
+} from "./FormRoot"
+// import { taskSchema, taskModel } from "../library/model"
+// import { PrettyCode } from "../library/utils"
 
-export const Form = ({
-  model = simpleFormModel(),
-  prefs = {},
-  ...otherProps
-}) => {
+export default ({ model = simpleFormModel(), prefs = {}, ...otherProps }) => {
   const [formModel, setFormModel] = useState(model)
   const localTheme = defaultLocalTheme()
   const formContext = defaultFormContext(
@@ -51,52 +47,6 @@ export const Form = ({
     </ContextProvider>
   )
 }
-
-export const DropBox = ({ children, name, ...otherProps }) => {
-  return <Box {...otherProps}>{children}</Box>
-}
-
-export const DragBox = ({ children, name, ...otherProps }) => {
-  return (
-    <Box draggable {...otherProps}>
-      {children}
-    </Box>
-  )
-}
-
-const onDragStart = (event, path) => {
-  console.log("drag start:", path, event.currentTarget)
-  event.dataTransfer.setData("path", path)
-
-  const emptyImage = new Image()
-  emptyImage.src =
-    "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
-  event.dataTransfer.setDragImage(emptyImage, 0, 0)
-}
-
-const onDragOver = (event, path) => {
-  event.preventDefault()
-}
-
-const onDrop = (event, path) => {
-  event.preventDefault()
-  const data = event.dataTransfer.getData("path")
-  console.log("drop:", path, event.currentTarget, data)
-  const point = {
-    x: event.nativeEvent.clientX,
-    y: event.nativeEvent.clientY,
-  }
-  const clientRect = event.currentTarget.getBoundingClientRect()
-  const bounds = {
-    x: clientRect.x,
-    y: clientRect.y,
-    width: clientRect.width,
-    height: clientRect.height,
-  }
-  console.log("drop point and bounds:", point, bounds)
-}
-
-const onMouseOver = (event, path) => {}
 
 export const EditorFormPart = ({ node, path, children }) => {
   const context = useContext(FormContext)
@@ -241,14 +191,48 @@ export const EditorFormPart = ({ node, path, children }) => {
   throw new Error("node.type handler not defined")
 }
 
-export default () => {
+export const DropBox = ({ children, name, ...otherProps }) => {
+  return <Box {...otherProps}>{children}</Box>
+}
+
+export const DragBox = ({ children, name, ...otherProps }) => {
   return (
-    <Fragment>
-      <Box>
-        <Form />
-        {/* <PrettyCode value={taskSchema} /> */}
-        {/* <PrettyCode value={taskModel} /> */}
-      </Box>
-    </Fragment>
+    <Box draggable {...otherProps}>
+      {children}
+    </Box>
   )
 }
+
+const onDragStart = (event, path) => {
+  console.log("drag start:", path, event.currentTarget)
+  event.dataTransfer.setData("path", path)
+
+  const emptyImage = new Image()
+  emptyImage.src =
+    "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
+  event.dataTransfer.setDragImage(emptyImage, 0, 0)
+}
+
+const onDragOver = (event, path) => {
+  event.preventDefault()
+}
+
+const onDrop = (event, path) => {
+  event.preventDefault()
+  const data = event.dataTransfer.getData("path")
+  console.log("drop:", path, event.currentTarget, data)
+  const point = {
+    x: event.nativeEvent.clientX,
+    y: event.nativeEvent.clientY,
+  }
+  const clientRect = event.currentTarget.getBoundingClientRect()
+  const bounds = {
+    x: clientRect.x,
+    y: clientRect.y,
+    width: clientRect.width,
+    height: clientRect.height,
+  }
+  console.log("drop point and bounds:", point, bounds)
+}
+
+const onMouseOver = (event, path) => {}

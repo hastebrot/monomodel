@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema can render react component 1`] = `
+exports[`model can render react component 1`] = `
 <div>
   foo
 </div>
 `;
 
-exports[`schema can walk json schema 1`] = `
+exports[`model can walk json schema 1`] = `
 Array [
   Object {
     "fullPath": Array [],

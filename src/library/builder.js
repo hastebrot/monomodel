@@ -1,7 +1,7 @@
 import { concat, get, set, pick } from "lodash"
 import { schemaWalk } from "@cloudflare/json-schema-walker"
-import { object, array, string, integer, fieldset, field } from "./fixture"
-import { pretty1 } from "../utils"
+import { object, array, string, integer, fieldset, field } from "./model"
+import { pretty1 } from "./utils"
 
 export const buildModel = schema => {
   const registry = {}
