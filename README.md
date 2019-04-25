@@ -1,5 +1,7 @@
 # monomodel
 
+[![Build Status](https://travis-ci.org/hastebrot/monomodel.svg?branch=master)](https://travis-ci.org/hastebrot/monomodel)
+
 ## Pages
 
 A storybook guide is available at https://hastebrot.github.io/monomodel/guide/.
