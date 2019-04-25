@@ -23,6 +23,8 @@ import { PrettyCode } from "../utils"
 import { taskSchema, taskModel } from "../tests/fixture"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import chroma from "chroma-js"
+import "typeface-open-sans"
+import "typeface-open-sans-condensed"
 
 export const Form = ({ model = simpleFormModel(), prefs = {} }) => {
   const [formModel, setFormModel] = useState(model)
@@ -38,7 +40,12 @@ export const Form = ({ model = simpleFormModel(), prefs = {} }) => {
   )
   return (
     <ContextProvider formContext={formContext} localTheme={localTheme}>
-      <Box paddingTop="major-2" paddingLeft="major-2" paddingRight="major-2">
+      <Box
+        _paddingTop="major-2"
+        paddingLeft="major-2"
+        paddingRight="major-2"
+        color="#121212"
+      >
         <FormRoot rootModel={formModel} />
       </Box>
     </ContextProvider>
@@ -109,7 +116,19 @@ export const EditorFormPart = ({ node, path, children }) => {
     setIsHover(false)
   }
 
-  const prefs = context.formPrefs[node.pointer] || {}
+  const fieldsetFontFamily = "open sans condensed"
+  const fieldFontFamily = "open sans"
+
+  const prefs = {
+    active: context.formPrefs.defaultActive,
+    ...context.formPrefs[node.pointer],
+  }
+  const header = node.pointer
+  // const header = node.title
+
+  const fontSize = ["36px", "30px", "24px", "20px"][
+    path.split(".").length
+  ]
 
   if (node.type === "fieldset") {
     return (
@@ -118,7 +137,9 @@ export const EditorFormPart = ({ node, path, children }) => {
         name={path}
         onDragOver={onDragOver}
         onDrop={event => onDrop(event, path)}
+        position="relative"
       >
+        <Box position="absolute" top="0" right="-50px">foo</Box>
         <Box
           marginLeft="-16px"
           paddingLeft="16px"
@@ -126,23 +147,34 @@ export const EditorFormPart = ({ node, path, children }) => {
           paddingRight="16px"
           backgroundColor={prefs.backgroundColorContainer}
         >
-          <Box
-            marginLeft="-16px"
-            paddingLeft="16px"
-            marginRight="-16px"
-            paddingRight="16px"
-            color={prefs.colorHeader}
-            backgroundColor={prefs.backgroundColorHeader}
-          >
-            <Heading use="h2" _paddingTop="8px" _paddingBottom="8px">
-              {node.pointer}
-            </Heading>
-          </Box>
+          {header && (
+            <Box
+              marginLeft="-16px"
+              paddingLeft="16px"
+              marginRight="-16px"
+              paddingRight="16px"
+              color={prefs.colorHeader}
+              backgroundColor={prefs.backgroundColorHeader}
+              opacity={!prefs.active ? "0.25" : null}
+              pointerEvents={!prefs.active ? "none" : null}
+              fontFamily={fieldsetFontFamily}
+            >
+              <Heading
+                use="h2"
+                paddingTop="8px"
+                _paddingBottom="8px"
+                fontSize={fontSize}
+              >
+                <Fragment>{header}</Fragment>
+                {/* <Fragment>{path}</Fragment> */}
+              </Heading>
+            </Box>
+          )}
           {children && (
             <Box
               onMouseOver={_onMouseOver}
               onMouseOut={_onMouseOut}
-              paddingTop="16px"
+              paddingTop={header ? "16px" : undefined}
               marginLeft="-16px"
               paddingLeft="16px"
               marginRight="-16px"
@@ -169,8 +201,14 @@ export const EditorFormPart = ({ node, path, children }) => {
         onMouseOver={event => onMouseOver(event, path)}
         onDragStart={event => onDragStart(event, path)}
       >
-        <Box paddingBottom="16px">
+        <Box
+          paddingBottom="16px"
+          opacity={!prefs.active ? "0.25" : null}
+          pointerEvents={!prefs.active ? "none" : null}
+          fontFamily={fieldFontFamily}
+        >
           <Input defaultValue={node.pointer} />
+          {/* <Input defaultValue={path} /> */}
         </Box>
       </DragBox>
     )

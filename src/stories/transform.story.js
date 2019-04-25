@@ -63,7 +63,14 @@ const stories = storiesOf("lib/transform", module)
 
 stories.addDecorator(story => (
   <ThemeProvider>
-    <Box background="#f7f7f8">{story()}</Box>
+    <Box
+      backgroundColor="#f7f7f8"
+      paddingLeft="major-5"
+      paddingRight="major-5"
+      paddingBottom="major-5"
+    >
+      {story()}
+    </Box>
   </ThemeProvider>
 ))
 
@@ -76,6 +83,10 @@ stories.add("insertion", () => {
   const contentStyle = {
     // backgroundColorContent: "#fbd9d2",
   }
+  const editStyle = {
+    backgroundColorHeader: "#fbd9d2",
+    backgroundColorContent: "#fbd9d2",
+  }
 
   const parentColumns = "repeat(2, 1fr)"
   const fullColumn = "1 / span 2"
@@ -85,6 +96,7 @@ stories.add("insertion", () => {
 
   const formModel = buildModel(orderSchema)
   const formPrefs = {
+    defaultActive: true,
     "#/": {
       ...headerStyle,
     },
@@ -92,15 +104,20 @@ stories.add("insertion", () => {
       gridTemplateColumns: parentColumns,
       ...headerStyle,
       ...contentStyle,
+      ...editStyle,
+      active: true,
     },
     "#/properties/customer/properties/customerNumber": {
       gridColumn: halfColumn,
+      active: true,
     },
     "#/properties/customer/properties/firstName": {
-      gridColumn: halfColumn,
+      gridColumn: leftColumn,
+      active: true,
     },
     "#/properties/customer/properties/lastName": {
       gridColumn: halfColumn,
+      active: true,
     },
     "#/properties/orderItems": {
       ...headerStyle,
@@ -116,5 +133,15 @@ stories.add("insertion", () => {
       ...contentStyle,
     },
   }
-  return <Form model={formModel} prefs={formPrefs} />
+  return (
+    <Box
+      marginLeft="major-1"
+      marginRight="major-1"
+      border="1px solid #cccccc"
+      borderTop="none"
+      backgroundColor="white"
+    >
+      <Form model={formModel} prefs={formPrefs} />
+    </Box>
+  )
 })
