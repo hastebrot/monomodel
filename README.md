@@ -1,5 +1,9 @@
 # monomodel
 
+## Pages
+
+A storybook guide is available at https://hastebrot.github.io/monomodel/guide/.
+
 ## Development
 
 Run development webserver for site.
@@ -26,6 +30,8 @@ $ yarn site:test
 
 - Started with form editor. `FormPart` is very usedful for drag and drop functionality.
   - Introduced `DragBox` and `DropBox` for better readability.
+
+---
 
 ### 02 Apr 2019 / Benjamin
 
