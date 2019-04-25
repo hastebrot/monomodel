@@ -5,13 +5,13 @@
 Run development webserver for site.
 
 ```console
-$ yarn site:start
+$ yarn site
 ```
 
 Run development webserver for guide.
 
 ```console
-$ yarn guide:start
+$ yarn guide
 ```
 
 Run test suites for site.
@@ -22,6 +22,11 @@ $ yarn site:test
 
 ## PLANFILE
 
+### 12 Apr 2019 / Benjamin
+
+- Started with form editor. `FormPart` is very usedful for drag and drop functionality.
+  - Introduced `DragBox` and `DropBox` for better readability.
+
 ### 02 Apr 2019 / Benjamin
 
 - Using `schemaWalk(schema, visitFn)` from [json-schema-tools](https://github.com/cloudflare/json-schema-tools/tree/%40cloudflare/json-schema-walker%400.1.1/workspaces/json-schema-walker). The `visitFn` callback gives me `schemaObject`, `path`, `parentSchemaObject` and `parentPath`.
@@ -29,6 +34,8 @@ $ yarn site:test
   - Using a path `registry` to keep track of `children` indices for the `model`. Every node (except leaves) in the `model` has a `children` array.
   - `path` and `parentPath` are JSON pointer fragments which are arrays. To generate `registry` path keys `toPointer()` was introduced which returns a pointer string.
   - Using lodash's `set()` to add `fieldset()`s and `field()`s to the `model`. It automatically generates the intermediate objects and arrays according to the object path. Introduced `toObjectPath()` which returns a JavaScript object path string.
+
+- Rewriting the paths
 
 ---
 
