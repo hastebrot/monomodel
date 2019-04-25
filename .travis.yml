@@ -24,4 +24,5 @@ before_script:
 # run yarn build and test scripts.
 script:
   - yarn site:test
+  - yarn docs:build
   - yarn guide:build

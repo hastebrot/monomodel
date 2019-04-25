@@ -5,23 +5,30 @@
 
 ## Pages
 
-A storybook guide is available at https://hastebrot.github.io/monomodel/guide/.
+- Documentation is available at https://hastebrot.github.io/monomodel/apidocs/.
+- Storybook guide is available at https://hastebrot.github.io/monomodel/guide/.
 
 ## Development
 
-Run development webserver for site.
+Run development webserver for site (using [craco](https://github.com/sharegate/craco)) at http://localhost:9010/.
 
 ```console
 $ yarn site
 ```
 
-Run development webserver for guide.
+Run development webserver for guide (using [storybook](https://github.com/storybooks/storybook)) at http://localhost:9001/.
 
 ```console
 $ yarn guide
 ```
 
-Run test suites for site.
+Run development webserver for docs (using [documentation](https://github.com/documentationjs/documentation)) at http://localhost:4001/.
+
+```console
+$ yarn docs
+```
+
+Run test suites for site (using [jest](https://github.com/facebook/jest)).
 
 ```console
 $ yarn site:test
