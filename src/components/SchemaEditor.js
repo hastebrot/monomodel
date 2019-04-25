@@ -11,6 +11,7 @@ import { orderSchema } from "../library/model"
 export const styles = css`
   .CodeMirror {
     height: auto;
+    font-family: Menlo, Monaco, "Courier New", monospace;
     font-size: 14px;
     line-height: 1.25;
   }

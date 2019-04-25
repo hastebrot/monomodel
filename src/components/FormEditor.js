@@ -1,14 +1,12 @@
 import React, { Fragment, useState, useContext } from "react"
 import { produce } from "immer"
-import { Box, Flex, Heading, Input } from "fannypack"
+import { Box, Flex, Heading, Text, InputField } from "fannypack"
 import chroma from "chroma-js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faTrashAlt,
   faGripLinesVertical,
 } from "@fortawesome/free-solid-svg-icons"
-import "typeface-open-sans"
-import "typeface-open-sans-condensed"
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import {
   FormRoot,
@@ -66,15 +64,15 @@ export const EditorFormPart = ({ node, path, children }) => {
     setIsHover(false)
   }
 
-  const fieldsetFontFamily = "open sans condensed"
-  const fieldFontFamily = "open sans"
-
   const prefs = {
-    active: context.formPrefs.defaultActive,
+    active: context.formPrefs.defaultActive || true,
     ...context.formPrefs[node.pointer],
   }
-  const header = node.pointer
-  // const header = node.title
+  const header = node.pointer ? (
+    <Text>
+      {node.title} <Text use="small">{node.pointer}</Text>
+    </Text>
+  ) : null
 
   const fontSize = context.formPrefs.headerFontSizes
     ? context.formPrefs.headerFontSizes[path.split(".").length]
@@ -137,12 +135,12 @@ export const EditorFormPart = ({ node, path, children }) => {
               backgroundColor={prefs.backgroundColorHeader}
               opacity={!prefs.active ? "0.25" : null}
               pointerEvents={!prefs.active ? "none" : null}
-              fontFamily={fieldsetFontFamily}
+              paddingBottom="8px"
             >
               <Heading
                 use="h2"
                 paddingTop="8px"
-                _paddingBottom="8px"
+                paddingBottom="8px"
                 fontSize={fontSize}
               >
                 <Fragment>{header}</Fragment>
@@ -155,7 +153,6 @@ export const EditorFormPart = ({ node, path, children }) => {
               {...rowPadding("16px")}
               onMouseOver={_onMouseOver}
               onMouseOut={_onMouseOut}
-              paddingTop={header ? "16px" : undefined}
               backgroundColor={prefs.backgroundColorContent}
               _backgroundColor={isHover ? "tomato" : undefined}
               display="grid"
@@ -165,12 +162,6 @@ export const EditorFormPart = ({ node, path, children }) => {
             >
               {children}
             </Box>
-          )}
-          {!children && (
-            <Box
-              {...rowPadding("16px")}
-              paddingTop={header ? "16px" : undefined}
-            />
           )}
         </Box>
       </DropBox>
@@ -188,10 +179,12 @@ export const EditorFormPart = ({ node, path, children }) => {
           paddingBottom="16px"
           opacity={!prefs.active ? "0.25" : null}
           pointerEvents={!prefs.active ? "none" : null}
-          fontFamily={fieldFontFamily}
         >
-          <Input defaultValue={node.pointer} />
-          {/* <Input defaultValue={path} /> */}
+          <InputField
+            defaultValue={node.pointer}
+            readOnly
+            label={node.pointer.split("/").slice(-1)[0]}
+          />
         </Box>
       </DragBox>
     )

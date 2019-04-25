@@ -1,6 +1,8 @@
 import React, { Fragment, useContext } from "react"
 import { Box, Text, Code, ThemeProvider, css } from "fannypack"
 import { compact } from "lodash-es"
+import "typeface-open-sans"
+import "typeface-open-sans-condensed"
 
 //------------------------------------------------------------------------------
 // FORM COMPONENTS.
@@ -112,24 +114,40 @@ export const defaultLocalTheme = (modifyLocalTheme = theme => theme) => {
 export const localTheme = {
   Pane: {
     base: css`
+      font-family: "open sans";
       border-radius: 0;
-    `
+    `,
   },
   Heading: {
     h2: css`
+      font-family: "open sans condensed";
       font-size: 20px;
       line-height: unset;
+      & small {
+        font-size: 14px;
+        font-family: "open sans";
+        font-weight: normal;
+      }
+    `,
+  },
+  Label: {
+    base: css`
+      font-family: "open sans condensed";
+      font-size: 16px;
     `,
   },
   Input: {
     base: css`
+      font-family: "open sans";
+      font-size: 14px;
+      line-height: unset;
       border: 1px solid #cccccc !important;
       border-radius: 0;
       box-shadow: unset !important;
-      height: 50px;
+      height: 40px;
       padding: 0 15px;
-    `
-  }
+    `,
+  },
 }
 
 //------------------------------------------------------------------------------

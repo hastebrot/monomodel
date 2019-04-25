@@ -6,7 +6,7 @@ import FormEditor from "../components/FormEditor"
 import { buildModel, buildFlatModel } from "../library/builder"
 import { object, array, string, integer, number } from "../library/model"
 
-const stories = storiesOf("components/form", module)
+const stories = storiesOf("components/builder", module)
 
 stories.addDecorator(story => (
   <ThemeProvider>
