@@ -115,6 +115,7 @@ const orderSchema = object({
     orderItems: array({
       title: "items",
       items: object({
+        title: "item",
         properties: {
           productNumber: string(),
           quantity: integer(),

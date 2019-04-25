@@ -1,6 +1,67 @@
-import { buildModel, toPointer, toObjectPath } from "../library/builder"
-import { object, array, string, integer, fieldset, field } from "../library/model"
+import {
+  buildModel,
+  buildFlatModel,
+  toPointer,
+  toObjectPath,
+} from "../library/builder"
+import {
+  object,
+  array,
+  string,
+  integer,
+  fieldset,
+  field,
+} from "../library/model"
 import { pretty1 } from "../library/utils"
+
+describe("flat builder", () => {
+  test.only("schema 1", () => {
+    // given:
+    const schema = object({
+      title: "order",
+    })
+    const model = fieldset("array", {
+      children: [
+        fieldset("object", {
+          pointer: "#/",
+          title: "order",
+        }),
+      ],
+    })
+    // expect:
+    expect(buildFlatModel(schema)).toEqual(model)
+  })
+
+  test("schema 2", () => {
+    // given:
+    const schema = object({
+      title: "order",
+      properties: {
+        orderNumber: string(),
+        orderDate: string(),
+      },
+    })
+    const model = fieldset("array", {
+      children: [
+        fieldset("object", {
+          pointer: "#/",
+          title: "order",
+          children: [
+            field("string", {
+              pointer: "#/properties/orderNumber",
+            }),
+            field("string", {
+              pointer: "#/properties/orderDate",
+            }),
+          ],
+        }),
+      ],
+    })
+
+    // expect:
+    expect(buildFlatModel(schema)).toEqual(model)
+  })
+})
 
 describe("builder", () => {
   test("schema 1", () => {

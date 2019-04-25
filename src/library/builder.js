@@ -3,15 +3,29 @@ import { schemaWalk } from "@cloudflare/json-schema-walker"
 import { object, array, string, integer, fieldset, field } from "./model"
 import { pretty1 } from "./utils"
 
+export const buildFlatModel = schema => {
+  const model = {}
+  traverseSchema(schema, (object, parentObject) => {
+    const pointer = toPointer(concat(parentObject.path, object.path))
+    const parentPointer = toPointer(parentObject.path)
+    const type = object.schema.type
+
+    if (isRootPointer(pointer, parentPointer)) {
+      console.log(object.schema)
+    }
+  })
+  return model
+}
+
 export const buildModel = schema => {
   const registry = {}
   const model = {}
-  schemaWalk(schema, (schemaObject, path, parentSchemaObject, parentPath) => {
-    const pointer = toPointer(concat(parentPath, path))
-    const parentPointer = toPointer(parentPath)
-    const type = schemaObject.type
+  traverseSchema(schema, (object, parentObject) => {
+    const pointer = toPointer(concat(parentObject.path, object.path))
+    const parentPointer = toPointer(parentObject.path)
+    const type = object.schema.type
 
-    if (pointer === parentPointer) {
+    if (isRootPointer(pointer, parentPointer)) {
       registry[pointer] = {
         parentPointer: null,
         path: null,
@@ -21,7 +35,7 @@ export const buildModel = schema => {
     } else {
       registry[pointer] = {
         parentPointer,
-        path,
+        path: object.path,
         index: registry[parentPointer].nextChildIndex,
         nextChildIndex: 0,
       }
@@ -40,23 +54,27 @@ export const buildModel = schema => {
       currentEntry = registry[currentEntry.parentPointer]
     }
 
-    // console.log(pretty1([parentPath, path]))
+    // console.log(pretty1([parentObject.path, object.path]))
     // console.log(pretty1(objectPathSegments))
 
     const objectPath = toObjectPath(concat(...objectPathSegments))
     const rootObjectPath = objectPath ? "root." + objectPath : "root"
 
     if (type === "object" || type === "array") {
-      const payload = pick(schemaObject, ["title"])
+      const payload = pick(object.schema, ["title"])
       const node = fieldset(type, { pointer, ...payload })
       set(model, rootObjectPath, node)
     } else {
-      const payload = pick(schemaObject, ["title"])
+      const payload = pick(object.schema, ["title"])
       const node = field(type, { pointer, ...payload })
       set(model, rootObjectPath, node)
     }
   })
   return model.root
+}
+
+export const isRootPointer = (pointer, parentPointer) => {
+  return pointer === parentPointer
 }
 
 export const toPointer = pathSegments => {
@@ -65,4 +83,12 @@ export const toPointer = pathSegments => {
 
 export const toObjectPath = pathSegments => {
   return pathSegments.join(".")
+}
+
+export const traverseSchema = (schema, visitFn) => {
+  schemaWalk(schema, (schemaObject, path, parentSchemaObject, parentPath) => {
+    const object = { schema: schemaObject, path: path }
+    const parentObject = { schema: parentSchemaObject, path: parentPath }
+    visitFn(object, parentObject)
+  })
 }
