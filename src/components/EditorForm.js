@@ -1,16 +1,6 @@
 import React, { Fragment, useState, useContext } from "react"
 import { produce } from "immer"
-import {
-  Box,
-  Flex,
-  Set,
-  Group,
-  Button,
-  Label,
-  Heading,
-  Input,
-  Pane,
-} from "fannypack"
+import { Box, Flex, Heading, Input } from "fannypack"
 import {
   FormRoot,
   FormContext,
@@ -19,14 +9,23 @@ import {
   defaultLocalTheme,
   simpleFormModel,
 } from "./forms"
-import { PrettyCode } from "../utils"
-import { taskSchema, taskModel } from "../tests/fixture"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+// import { PrettyCode } from "../utils"
+// import { taskSchema, taskModel } from "../tests/fixture"
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import chroma from "chroma-js"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faTrashAlt,
+  faGripLinesVertical,
+} from "@fortawesome/free-solid-svg-icons"
 import "typeface-open-sans"
 import "typeface-open-sans-condensed"
 
-export const Form = ({ model = simpleFormModel(), prefs = {} }) => {
+export const Form = ({
+  model = simpleFormModel(),
+  prefs = {},
+  ...otherProps
+}) => {
   const [formModel, setFormModel] = useState(model)
   const localTheme = defaultLocalTheme()
   const formContext = defaultFormContext(
@@ -45,6 +44,7 @@ export const Form = ({ model = simpleFormModel(), prefs = {} }) => {
         paddingLeft="major-2"
         paddingRight="major-2"
         color="#121212"
+        {...otherProps}
       >
         <FormRoot rootModel={formModel} />
       </Box>
@@ -126,9 +126,16 @@ export const EditorFormPart = ({ node, path, children }) => {
   const header = node.pointer
   // const header = node.title
 
-  const fontSize = ["36px", "30px", "24px", "20px"][
-    path.split(".").length
-  ]
+  const fontSize = ["36px", "30px", "24px", "20px"][path.split(".").length]
+
+  const rowPadding = paddingPx => {
+    return {
+      paddingLeft: `${paddingPx}`,
+      paddingRight: `${paddingPx}`,
+      marginLeft: `-${paddingPx}`,
+      marginRight: `-${paddingPx}`,
+    }
+  }
 
   if (node.type === "fieldset") {
     return (
@@ -139,20 +146,41 @@ export const EditorFormPart = ({ node, path, children }) => {
         onDrop={event => onDrop(event, path)}
         position="relative"
       >
-        <Box position="absolute" top="0" right="-50px">foo</Box>
+        {prefs.selected && (
+          <Fragment>
+            <Flex
+              column
+              alignItems="center"
+              position="absolute"
+              top="16px"
+              left="-50px"
+              width="20px"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} size="lg" color="#d70004" />
+            </Flex>
+            <Flex
+              column
+              alignItems="center"
+              position="absolute"
+              top="50%"
+              left="-50px"
+              width="20px"
+            >
+              <FontAwesomeIcon
+                icon={faGripLinesVertical}
+                size="lg"
+                color="#aaaaaa"
+              />
+            </Flex>
+          </Fragment>
+        )}
         <Box
-          marginLeft="-16px"
-          paddingLeft="16px"
-          marginRight="-16px"
-          paddingRight="16px"
+          {...rowPadding("16px")}
           backgroundColor={prefs.backgroundColorContainer}
         >
           {header && (
             <Box
-              marginLeft="-16px"
-              paddingLeft="16px"
-              marginRight="-16px"
-              paddingRight="16px"
+              {...rowPadding("16px")}
               color={prefs.colorHeader}
               backgroundColor={prefs.backgroundColorHeader}
               opacity={!prefs.active ? "0.25" : null}
@@ -172,13 +200,10 @@ export const EditorFormPart = ({ node, path, children }) => {
           )}
           {children && (
             <Box
+              {...rowPadding("16px")}
               onMouseOver={_onMouseOver}
               onMouseOut={_onMouseOut}
               paddingTop={header ? "16px" : undefined}
-              marginLeft="-16px"
-              paddingLeft="16px"
-              marginRight="-16px"
-              paddingRight="16px"
               backgroundColor={prefs.backgroundColorContent}
               _backgroundColor={isHover ? "tomato" : undefined}
               display="grid"

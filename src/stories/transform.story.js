@@ -106,6 +106,7 @@ stories.add("insertion", () => {
       ...contentStyle,
       ...editStyle,
       active: true,
+      // selected: true,
     },
     "#/properties/customer/properties/customerNumber": {
       gridColumn: halfColumn,
@@ -135,7 +136,7 @@ stories.add("insertion", () => {
   }
   return (
     <Box
-      marginLeft="major-1"
+      marginLeft="major-4"
       marginRight="major-1"
       border="1px solid #cccccc"
       borderTop="none"
