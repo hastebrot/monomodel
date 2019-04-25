@@ -1,6 +1,7 @@
 # monomodel
 
 [![Build Status](https://travis-ci.org/hastebrot/monomodel.svg?branch=master)](https://travis-ci.org/hastebrot/monomodel)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Pages
 
