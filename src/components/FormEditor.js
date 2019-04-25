@@ -76,7 +76,9 @@ export const EditorFormPart = ({ node, path, children }) => {
   const header = node.pointer
   // const header = node.title
 
-  const fontSize = ["36px", "30px", "24px", "20px"][path.split(".").length]
+  const fontSize = context.formPrefs.headerFontSizes
+    ? context.formPrefs.headerFontSizes[path.split(".").length]
+    : null
 
   const rowPadding = paddingPx => {
     return {
@@ -163,6 +165,12 @@ export const EditorFormPart = ({ node, path, children }) => {
             >
               {children}
             </Box>
+          )}
+          {!children && (
+            <Box
+              {...rowPadding("16px")}
+              paddingTop={header ? "16px" : undefined}
+            />
           )}
         </Box>
       </DropBox>

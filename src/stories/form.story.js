@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
 
 import FormEditor from "../components/FormEditor"
-import { buildModel } from "../library/builder"
+import { buildModel, buildFlatModel } from "../library/builder"
 import { object, array, string, integer, number } from "../library/model"
 
 const stories = storiesOf("components/form", module)
@@ -21,13 +21,45 @@ stories.addDecorator(story => (
   </ThemeProvider>
 ))
 
+stories.add("nested fieldsets", () => {
+  const formPrefs = createFormPrefs()
+  const formModel = buildModel(orderSchema)
+  return (
+    <Box
+      marginLeft="major-4"
+      marginRight="major-1"
+      border="1px solid #cccccc"
+      borderTop="none"
+      backgroundColor="white"
+    >
+      <FormEditor model={formModel} prefs={formPrefs} />
+    </Box>
+  )
+})
+
+stories.add("flat fieldsets", () => {
+  const formPrefs = createFormPrefs()
+  const formModel = buildFlatModel(orderSchema)
+  return (
+    <Box
+      marginLeft="major-4"
+      marginRight="major-1"
+      border="1px solid #cccccc"
+      borderTop="none"
+      backgroundColor="white"
+    >
+      <FormEditor model={formModel} prefs={formPrefs} />
+    </Box>
+  )
+})
+
 const parentColumns = "repeat(2, 1fr)"
 const fullColumn = "1 / span 2"
 const halfColumn = "span 1"
 const leftColumn = "1 / span 1"
 const rightColumn = "2 / span 1"
 
-stories.add("nested fieldsets", () => {
+const createFormPrefs = () => {
   const headerStyle = {
     // colorHeader: "white",
     // backgroundColorHeader: "#002245",
@@ -40,10 +72,9 @@ stories.add("nested fieldsets", () => {
     backgroundColorHeader: "#fbd9d2",
     backgroundColorContent: "#fbd9d2",
   }
-
-  const formModel = buildModel(orderSchema)
   const formPrefs = {
     defaultActive: true,
+    // headerFontSizes: ["36px", "30px", "24px", "20px"],
     "#/": {
       ...headerStyle,
     },
@@ -81,22 +112,8 @@ stories.add("nested fieldsets", () => {
       ...contentStyle,
     },
   }
-  return (
-    <Box
-      marginLeft="major-4"
-      marginRight="major-1"
-      border="1px solid #cccccc"
-      borderTop="none"
-      backgroundColor="white"
-    >
-      <FormEditor model={formModel} prefs={formPrefs} />
-    </Box>
-  )
-})
-
-stories.add("flat fieldsets", () => {
-  return <Box />
-})
+  return formPrefs
+}
 
 const orderSchema = object({
   $schema: "http://json-schema.org/schema#",
