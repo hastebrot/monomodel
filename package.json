@@ -8,7 +8,7 @@
     "site:build": "craco build",
     "site:test": "craco test --verbose=false",
     "guide": "start-storybook -p 9001 -c .storybook/ --ci",
-    "guide:build": "build-storybook -c .storybook/ -o ./build/monomodel-guide",
+    "guide:build": "build-storybook -c .storybook/ -o ./docs/monomodel-guide",
     "fix": "prettier \"{src,.storybook}/**/*.{js,jsx,json,md,mdx}\" --write"
   },
   "dependencies": {
