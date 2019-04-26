@@ -36,6 +36,25 @@ $ yarn site:test
 
 ## PLANFILE
 
+### 25 Apr 2019 / Benjamin
+
+- warum hierarchische forms haben, wenn man stattdessen flache haben kann?
+  - statt nested fieldsets einfach flat fieldsets
+  - und das ergebnis sieht genau gleich aus
+  - wobei dann aber form model transformationen und ein form editor wesentlich einfach zu bauern sind
+
+- bei einer nested form enthält `#/` alle fieldsets und fields. bei einer flatten form enthält `#/` lediglich orderNumber und orderDate. totalPrice gehört eigentlich auch noch zu `#/`; hier legen wir ein weiteres fieldset an mit dem `#/` json schema pointer
+  - `#/properties/orderItems` is ein fieldset mit header aber ohne body. `#/properties/totalPrice` ist ein fieldset ohne header aber mit body
+  - der orangene highlight background ist übrigens getrickst. padding im fieldset header oder body geht nicht; entweder ist der column gutter kaputt oder die fieldsets werden bei jedem verschachteln immer weiter eingerückt. hier benutze ich einfach negatives margin links und rechts. bei einem flat form model muss man sich aber keine gedanken über das layout mit padding machen.
+  - interessant sind auch die fieldset arrays, wie `#/properties/orderItems/items`. hier muss ich einen fieldset scope haben, und dann kann man das fieldset einfach nicht mehr weiter hoch schieben. ausschlaggebend ist hier der jsonschema tree.
+
+- man kann dann auch virtual lists und react-movable benutzen
+  - ahh, ich brauche dann noch ein manuell definierbares fieldset scope. damit die form dann auch weiß, dass sie array-fremde fieldsets innerhalb des fieldset array repeaten soll
+  - wenn alles so eine lose liste ist, dann man man zusätzlich noch die relations definieren; aber im json schema wird zum glück das meiste schon beschrieben
+  - lustig ist auch, wenn man die fieldsets editiert hat und dann das json schema editiert. es sollte jetzt leichter sind, da einen diff zu machen und die added/removed fieldsets/fields im editor zu zeigen
+
+---
+
 ### 12 Apr 2019 / Benjamin
 
 - Started with form editor. `FormPart` is very usedful for drag and drop functionality.
