@@ -3,7 +3,7 @@ import {
   buildFlatModel,
   toPointer,
   toObjectPath,
-} from "../library/builder"
+} from "../helpers/builder"
 import {
   object,
   array,
@@ -12,8 +12,8 @@ import {
   integer,
   fieldset,
   field,
-} from "../library/model"
-import { pretty1 } from "../library/utils"
+} from "../helpers/model"
+import { pretty1 } from "../helpers/utils"
 
 describe("flat builder", () => {
   test("schema 1", () => {

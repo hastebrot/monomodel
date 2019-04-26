@@ -1,6 +1,6 @@
 import React from "react"
 import renderer from "react-test-renderer"
-import { fetchSchemaPaths, orderSchema } from "../library/model"
+import { fetchSchemaPaths, orderSchema } from "../helpers/model"
 
 describe("model", () => {
   it("can render react component", () => {

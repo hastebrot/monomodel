@@ -5,8 +5,8 @@ import { UnControlled as CodeMirror } from "react-codemirror2"
 import "codemirror/lib/codemirror.css"
 import "codemirror/mode/javascript/javascript"
 import "codemirror/keymap/vim"
-import { pretty } from "../library/utils"
-import { orderSchema } from "../library/model"
+import { orderSchema } from "../helpers/model"
+import { pretty } from "../helpers/utils"
 
 export const styles = css`
   .CodeMirror {

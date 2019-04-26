@@ -2,8 +2,8 @@ import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
 import FormEditor from "../components/FormEditor"
-import { buildModel, buildFlatModel } from "../library/builder"
-import { object, array, string, integer, number } from "../library/model"
+import { buildModel, buildFlatModel } from "../helpers/builder"
+import { object, array, string, integer, number } from "../helpers/model"
 
 const stories = storiesOf("components/builder", module)
 
