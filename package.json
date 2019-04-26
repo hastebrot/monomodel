@@ -11,7 +11,10 @@
     "guide:build": "build-storybook -c .storybook/ -o ./docs/guide",
     "docs": "documentation serve --watch src/** --port 4001",
     "docs:build": "documentation build src/** -f html -o docs/apidocs",
-    "fix": "prettier \"{src,.storybook}/**/*.{js,jsx,json,md,mdx}\" --write"
+    "fix": "prettier \"{src,.storybook}/**/*.{js,jsx,json,md,mdx}\" --write",
+    "release": "standard-version -i CHANGES.md --release-as minor",
+    "release:notes": "standard-version -i CHANGES.md --skip.bump --skip.commit --skip.tag",
+    "release:publish": "git push --follow-tags"
   },
   "dependencies": {
     "@cloudflare/json-schema-walker": "^0.1.1",
@@ -52,7 +55,6 @@
     "@types/node": "^11.13.7",
     "@types/react": "^16.8.14",
     "@types/react-dom": "^16.8.4",
-    "@types/storybook__react": "^4.0.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
     "documentation": "^10.1.0",
@@ -60,6 +62,7 @@
     "react-hooks-testing-library": "^0.5.0",
     "react-scripts": "^3.0.0",
     "react-test-renderer": "^16.8.6",
+    "standard-version": "^5.0.2",
     "style-loader": "^0.23.1"
   },
   "browserslist": [
