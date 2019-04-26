@@ -34,16 +34,25 @@ Run test suites for site (using [jest](https://github.com/facebook/jest)).
 $ yarn site:test
 ```
 
+Release a new version (using [standard-version](https://github.com/conventional-changelog/standard-version/)).
+
+```console
+$ yarn release:notes
+$ yarn release -r 0.1.0 -m "(release) Version 0.1.0."
+```
+
 ## PLANFILE
 
 ### 25 Apr 2019 / Benjamin
 
 - warum hierarchische forms haben, wenn man stattdessen flache haben kann?
+
   - statt nested fieldsets einfach flat fieldsets
   - und das ergebnis sieht genau gleich aus
   - wobei dann aber form model transformationen und ein form editor wesentlich einfach zu bauern sind
 
 - bei einer nested form enthält `#/` alle fieldsets und fields. bei einer flatten form enthält `#/` lediglich orderNumber und orderDate. totalPrice gehört eigentlich auch noch zu `#/`; hier legen wir ein weiteres fieldset an mit dem `#/` json schema pointer
+
   - `#/properties/orderItems` is ein fieldset mit header aber ohne body. `#/properties/totalPrice` ist ein fieldset ohne header aber mit body
   - der orangene highlight background ist übrigens getrickst. padding im fieldset header oder body geht nicht; entweder ist der column gutter kaputt oder die fieldsets werden bei jedem verschachteln immer weiter eingerückt. hier benutze ich einfach negatives margin links und rechts. bei einem flat form model muss man sich aber keine gedanken über das layout mit padding machen.
   - interessant sind auch die fieldset arrays, wie `#/properties/orderItems/items`. hier muss ich einen fieldset scope haben, und dann kann man das fieldset einfach nicht mehr weiter hoch schieben. ausschlaggebend ist hier der jsonschema tree.
@@ -65,12 +74,13 @@ $ yarn site:test
 ### 02 Apr 2019 / Benjamin
 
 - Using `schemaWalk(schema, visitFn)` from [json-schema-tools](https://github.com/cloudflare/json-schema-tools/tree/%40cloudflare/json-schema-walker%400.1.1/workspaces/json-schema-walker). The `visitFn` callback gives me `schemaObject`, `path`, `parentSchemaObject` and `parentPath`.
+
   - **It works for the initial simple examples of nested JSON schemas!** :sunglasses:
   - Using a path `registry` to keep track of `children` indices for the `model`. Every node (except leaves) in the `model` has a `children` array.
   - `path` and `parentPath` are JSON pointer fragments which are arrays. To generate `registry` path keys `toPointer()` was introduced which returns a pointer string.
   - Using lodash's `set()` to add `fieldset()`s and `field()`s to the `model`. It automatically generates the intermediate objects and arrays according to the object path. Introduced `toObjectPath()` which returns a JavaScript object path string.
 
-- Rewriting the paths
+- Rewriting the paths...
 
 ---
 
