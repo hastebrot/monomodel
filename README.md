@@ -5,8 +5,9 @@
 
 ## Pages
 
-- Documentation is available at https://hastebrot.github.io/monomodel/apidocs/.
+- Demo site is available at https://hastebrot.github.io/monomodel/site/.
 - Storybook guide is available at https://hastebrot.github.io/monomodel/guide/.
+- Documentation is available at https://hastebrot.github.io/monomodel/apidocs/.
 
 ## Development
 
@@ -42,6 +43,12 @@ $ yarn release -r 0.1.0 -m "(release) Version 0.1.0."
 ```
 
 ## PLANFILE
+
+### 27 Apr 2019 / Benjamin
+
+- convential changelogs are nice. let's have them.
+  - there is a pull request in the pipeline that allows configuration of conventoinal commits.
+    https://github.com/conventional-changelog/standard-version/pull/323
 
 ### 25 Apr 2019 / Benjamin
 

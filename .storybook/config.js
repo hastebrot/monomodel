@@ -3,7 +3,7 @@ import { themes } from "@storybook/theming"
 
 addParameters({
   options: {
-    name: "monomodel",
+    name: "monomodel storybook",
     theme: themes.light,
     showPanel: false,
     sortStoriesByKind: true,
