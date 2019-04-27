@@ -42,6 +42,14 @@ $ yarn release:notes
 $ yarn release -r 0.1.0 -m "(release) Version 0.1.0."
 ```
 
+## Programmer Documentation
+
+- https://reactjs.org/ (A declarative, efficient, and flexible JavaScript library for building user interfaces, [GitHub repository](https://github.com/facebook/react/))
+- https://fannypack.style/ (A friendly, themeable, accessible React UI Kit built with Reakit, [GitHub repository](https://github.com/fannypackui/fannypack))
+- https://reakit.io/ (Toolkit for building accessible rich web apps with React, [GitHub repository](https://github.com/reakit/reakit))
+- https://github.com/ai/storeon (Tiny (173 bytes) event-based immutable state manager for React and Preact)
+- https://jestjs.io/ (Delightful JavaScript Testing, [GitHub repository](https://github.com/facebook/jest))
+
 ## PLANFILE
 
 ### 27 Apr 2019 / Benjamin

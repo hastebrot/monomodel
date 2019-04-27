@@ -25,7 +25,7 @@
     "chroma-js": "^2.0.3",
     "classnames": "^2.2.6",
     "codemirror": "^5.46.0",
-    "fannypack": "^4.17.6",
+    "fannypack": "^4.17.8",
     "immer": "^3.1.1",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.7.2",
@@ -36,6 +36,7 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-tiny-virtual-list": "^2.2.0",
+    "storeon": "^0.8.0",
     "styled-components": "^4.2.0",
     "typeface-open-sans": "^0.0.54",
     "typeface-open-sans-condensed": "^0.0.72"
