@@ -40,7 +40,8 @@
     "storeon": "^0.8.0",
     "styled-components": "^4.2.0",
     "typeface-open-sans": "^0.0.54",
-    "typeface-open-sans-condensed": "^0.0.72"
+    "typeface-open-sans-condensed": "^0.0.72",
+    "use-react-router": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

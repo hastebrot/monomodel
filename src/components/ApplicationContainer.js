@@ -64,7 +64,7 @@ export const applicationTheme = defaultTheme({
   Text: {
     base: css`
       &.small {
-        font-size: 12px;
+        font-size: 0.8rem;
       }
     `
   },

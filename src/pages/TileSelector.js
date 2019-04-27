@@ -1,25 +1,33 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { Box, Pane, Flex, Set, Heading, Text, Link } from "fannypack"
 import useStoreon from "storeon/react"
+import useReactRouter from "use-react-router"
 import { round } from "lodash"
 import { DateTime } from "luxon"
 import "typeface-open-sans"
 import "typeface-open-sans-condensed"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
+import { faFileAlt } from "@fortawesome/free-regular-svg-icons"
 import { FORMS_CREATE } from "../store/forms"
 
 export default ({ ...otherProps }) => {
+  const { history, location, match } = useReactRouter()
   const { dispatch, forms } = useStoreon("forms")
   const [tiles, setTiles] = useState(null)
 
-  const lastModification = DateTime.local(2019, 4, 1, 12, 0, 0)
-  const now = DateTime.local()
-  const durationText = formatDuration(now.diff(lastModification))
-
   useEffect(() => {
     dispatch(FORMS_CREATE)
-    setTiles(["inky", "blinky", "pinky", "clyde"])
+    setTiles([
+      {
+        name: "orderSchema form",
+        updatedAt: DateTime.local(2019, 4, 27, 12, 0, 0),
+      },
+      {
+        name: "taskSchema form",
+        updatedAt: DateTime.local(2019, 4, 1, 12, 0, 0),
+      },
+    ])
   }, [])
 
   return (
@@ -38,9 +46,15 @@ export default ({ ...otherProps }) => {
         fontFamily="open sans"
         maxWidth="1080px"
       >
-        <Heading use="h2">tile selector</Heading>
+        <Heading use="h2">form selection</Heading>
         <Set isFilled spacing="major-3" marginTop="major-3">
-          <Tile dashed>
+          <Tile
+            dashed
+            cursor="pointer"
+            onClick={() => {
+              history.push({ pathname: "/form" })
+            }}
+          >
             <Link href="#/form">
               <Flex row justifyContent="center">
                 <Box paddingRight="major-1">
@@ -52,10 +66,23 @@ export default ({ ...otherProps }) => {
           </Tile>
           {tiles &&
             tiles.map(tile => {
+              const now = DateTime.local()
+              const durationText = formatDuration(now.diff(tile.updatedAt))
               return (
-                <Tile key={tile}>
+                <Tile
+                  key={tile.name}
+                  cursor="pointer"
+                  onClick={() => {
+                    history.push({ pathname: "/form" })
+                  }}
+                >
                   <Flex column alignItems="center">
-                    <Link href="#/form">{tile}</Link>
+                    <Box marginBottom="minor-1">
+                      <FontAwesomeIcon icon={faFileAlt} size="lg" />
+                    </Box>
+                    <Box marginTop="minor-1" marginBottom="minor-1">
+                      <Link href="#/form">{tile.name}</Link>
+                    </Box>
                     <Text use="small" className="small">
                       {durationText}
                     </Text>
@@ -75,7 +102,7 @@ export const Tile = ({ children, dashed = false, ...otherProps }) => {
       border={!dashed ? "1px solid #ccc" : "1px dashed #ccc"}
       borderRadius="8px"
       backgroundColor={!dashed ? "#f7f7f8" : null}
-      width="calc(33.33% - 24px)"
+      width="calc(33.333% - 24px)"
       height="160px"
       padding="major-2"
       alignItems="center"
@@ -88,19 +115,20 @@ export const Tile = ({ children, dashed = false, ...otherProps }) => {
 }
 
 export const formatDuration = duration => {
-  const pluralize = (value, oneUnit, moreUnit) =>
-    value === 1 ? `${value} ${oneUnit}` : `${value} ${moreUnit}`
-  const timespans = duration
-    .shiftTo("months", "days", "hours", "minutes")
-    .toObject()
-  if (timespans.months) {
-    return pluralize(round(timespans.months), "month ago", "months ago")
+  const pluralize = (value, singular, plural) =>
+    value === 1 ? `${value} ${singular}` : `${value} ${plural}`
+  const timeUnits = {
+    months: ["month ago", "months ago"],
+    days: ["day ago", "days ago"],
+    hours: ["hour ago", "hours ago"],
+    minutes: ["minute ago", "minutes ago"],
+    seconds: ["second ago", "seconds ago"],
   }
-  if (timespans.days) {
-    return pluralize(round(timespans.days), "day ago", "days ago")
+  const timeSpans = duration.shiftTo(...Object.keys(timeUnits)).toObject()
+  for (const timeUnit of Object.keys(timeUnits)) {
+    if (timeSpans[timeUnit]) {
+      return pluralize(round(timeSpans[timeUnit]), ...timeUnits[timeUnit])
+    }
   }
-  if (timespans.hours) {
-    return pluralize(round(timespans.hours), "hour ago", "hours ago")
-  }
-  return pluralize(round(timespans.seconds), "second ago", "seconds ago")
+  throw new Error("format duration could not find a matching time unit")
 }
