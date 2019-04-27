@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import { Box, Pane, Flex, Set, Heading, Text, Link } from "fannypack"
 import useStoreon from "storeon/react"
 import useReactRouter from "use-react-router"
+import useLocalStorage from "react-use/lib/useLocalStorage"
 import { round } from "lodash"
 import { DateTime } from "luxon"
 import "typeface-open-sans"
@@ -14,20 +15,31 @@ import { FORMS_CREATE } from "../store/forms"
 export default ({ ...otherProps }) => {
   const { history, location, match } = useReactRouter()
   const { dispatch, forms } = useStoreon("forms")
-  const [tiles, setTiles] = useState(null)
+  const currentVersion = 1
+  const [version, setVersion] = useLocalStorage(
+    "monomodel.version",
+    currentVersion
+  )
+  const [tiles, setTiles] = useLocalStorage("monomodel.tiles", null)
+
+  useEffect(() => {
+    if (version !== currentVersion) {
+      setVersion(currentVersion)
+      setTiles([
+        {
+          name: "orderSchema form",
+          updatedAt: DateTime.local(2019, 4, 27, 12, 0, 0).toISO(),
+        },
+        {
+          name: "taskSchema form",
+          updatedAt: DateTime.local(2019, 4, 1, 12, 0, 0).toISO(),
+        },
+      ])
+    }
+  }, [version])
 
   useEffect(() => {
     dispatch(FORMS_CREATE)
-    setTiles([
-      {
-        name: "orderSchema form",
-        updatedAt: DateTime.local(2019, 4, 27, 12, 0, 0),
-      },
-      {
-        name: "taskSchema form",
-        updatedAt: DateTime.local(2019, 4, 1, 12, 0, 0),
-      },
-    ])
   }, [])
 
   return (
@@ -67,7 +79,8 @@ export default ({ ...otherProps }) => {
           {tiles &&
             tiles.map(tile => {
               const now = DateTime.local()
-              const durationText = formatDuration(now.diff(tile.updatedAt))
+              const past = DateTime.fromISO(tile.updatedAt)
+              const durationText = formatDuration(now.diff(past))
               return (
                 <Tile
                   key={tile.name}

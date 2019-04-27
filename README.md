@@ -49,6 +49,7 @@ $ yarn release -r 0.1.0 -m "(release) Version 0.1.0."
 - https://reakit.io/ (Toolkit for building accessible rich web apps with React, [GitHub repository](https://github.com/reakit/reakit))
 - https://github.com/ai/storeon (Tiny (173 bytes) event-based immutable state manager for React and Preact)
 - https://jestjs.io/ (Delightful JavaScript Testing, [GitHub repository](https://github.com/facebook/jest))
+- https://moment.github.io/luxon/ (A powerful, modern, and friendly wrapper for Javascript dates and times, [GitHub repository](https://github.com/moment/luxon))
 
 ## PLANFILE
 
