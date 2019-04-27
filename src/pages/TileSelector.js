@@ -17,6 +17,7 @@ export default ({ ...otherProps }) => {
   const { history, location, match } = useReactRouter()
   const { dispatch, forms } = useStoreon("forms")
   const currentVersion = 3
+  const currentVersion = 1
   const [version, setVersion] = useLocalStorage(
     "monomodel.version",
     currentVersion
