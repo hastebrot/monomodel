@@ -59,6 +59,18 @@ export const applicationTheme = defaultTheme({
       font-family: "open sans condensed", sans-serif;
       font-size: 22px;
       color: #121212;
+    `,
+  },
+  Text: {
+    base: css`
+      &.small {
+        font-size: 12px;
+      }
     `
-  }
+  },
+  Link: {
+    base: css`
+      text-decoration: unset;
+    `,
+  },
 })

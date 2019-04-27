@@ -14,6 +14,7 @@ export default ({ nested = false, ...otherProps }) => {
       paddingLeft="major-5"
       paddingRight="major-5"
       paddingBottom="major-5"
+      height="100vh"
       {...otherProps}
     >
       <Box
