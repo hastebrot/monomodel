@@ -55,8 +55,10 @@ $ yarn release -r 0.1.0 -m "(release) Version 0.1.0."
 ### 27 Apr 2019 / Benjamin
 
 - convential changelogs are nice. let's have them.
-  - there is a pull request in the pipeline that allows configuration of conventoinal commits.
+  - there is a pull request in the pipeline that allows configuration of conventional commits.
     https://github.com/conventional-changelog/standard-version/pull/323
+  - there is a brief overview for the commit message conventions.
+    https://github.com/conventional-changelog/standard-version/tree/v5.0.2#commit-message-convention-at-a-glance
 
 ### 25 Apr 2019 / Benjamin
 
