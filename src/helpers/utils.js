@@ -1,14 +1,31 @@
 import React from "react"
 
+export const check = (condition, message = () => "condition is false") => {
+  if (!condition) {
+    throw new Error(message())
+  }
+}
+
+export const checkNotNil = (value, message = () => "value is nil") => {
+  if (isNil(value)) {
+    throw new Error(message())
+  }
+}
+
+export const isNil = value => {
+  return value === null || value === undefined
+}
+
 export const PrettyCode = ({ value, indent = 2, ...otherProps }) => {
   return (
     <pre
       style={{
-        margin: "25px",
-        whiteSpace: "pre-wrap",
-        wordWrap: "break-word",
+        margin: "0",
+        padding: "0",
         color: "#000",
         fontSize: "13px",
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
       }}
       {...otherProps}
     >

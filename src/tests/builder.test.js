@@ -70,6 +70,7 @@ describe("flat builder", () => {
         orderNumber: string(),
         orderDate: string(),
         customer: object({
+          title: "customer",
           properties: {
             customerNumber: string(),
             firstName: string(),
@@ -94,6 +95,7 @@ describe("flat builder", () => {
         }),
         fieldset("object", {
           pointer: "#/properties/customer",
+          title: "customer",
           children: [
             field("string", {
               pointer: "#/properties/customer/properties/customerNumber",
@@ -120,6 +122,7 @@ describe("flat builder", () => {
         orderNumber: string(),
         orderDate: string(),
         customer: object({
+          title: "customer",
           properties: {
             customerNumber: string(),
             firstName: string(),
@@ -127,7 +130,9 @@ describe("flat builder", () => {
           },
         }),
         orderItems: array({
+          title: "items",
           items: object({
+            title: "item",
             properties: {
               productNumber: string(),
               quantity: integer(),
@@ -154,6 +159,7 @@ describe("flat builder", () => {
         }),
         fieldset("object", {
           pointer: "#/properties/customer",
+          title: "customer",
           children: [
             field("string", {
               pointer: "#/properties/customer/properties/customerNumber",
@@ -168,9 +174,11 @@ describe("flat builder", () => {
         }),
         fieldset("array", {
           pointer: "#/properties/orderItems",
+          title: "items",
         }),
         fieldset("object", {
           pointer: "#/properties/orderItems/items",
+          title: "item",
           children: [
             field("string", {
               pointer: "#/properties/orderItems/items/properties/productNumber",
@@ -246,6 +254,7 @@ describe("builder", () => {
         orderNumber: string(),
         orderDate: string(),
         customer: object({
+          title: "customer",
           properties: {
             customerNumber: string(),
             firstName: string(),
@@ -266,6 +275,7 @@ describe("builder", () => {
         }),
         fieldset("object", {
           pointer: "#/properties/customer",
+          title: "customer",
           children: [
             field("string", {
               pointer: "#/properties/customer/properties/customerNumber",
@@ -292,6 +302,7 @@ describe("builder", () => {
         orderNumber: string(),
         orderDate: string(),
         customer: object({
+          title: "customer",
           properties: {
             customerNumber: string(),
             firstName: string(),
@@ -299,7 +310,9 @@ describe("builder", () => {
           },
         }),
         orderItems: array({
+          title: "items",
           items: object({
+            title: "item",
             properties: {
               productNumber: string(),
               quantity: integer(),
@@ -322,6 +335,7 @@ describe("builder", () => {
         }),
         fieldset("object", {
           pointer: "#/properties/customer",
+          title: "customer",
           children: [
             field("string", {
               pointer: "#/properties/customer/properties/customerNumber",
@@ -336,9 +350,11 @@ describe("builder", () => {
         }),
         fieldset("array", {
           pointer: "#/properties/orderItems",
+          title: "items",
           children: [
             fieldset("object", {
               pointer: "#/properties/orderItems/items",
+              title: "item",
               children: [
                 field("string", {
                   pointer:
