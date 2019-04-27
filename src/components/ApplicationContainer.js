@@ -1,7 +1,8 @@
 import React, { Fragment } from "react"
 import { HashRouter, Route, Switch } from "react-router-dom"
 import { ThemeProvider, css, defaultTheme } from "fannypack"
-import SelectionTiles from "../pages/SelectionTiles"
+import { SelectionTiles } from "../pages"
+import { StoreContextProvider } from "../store"
 
 export default () => {
   return (
@@ -28,9 +29,11 @@ export const ApplicationContextProvider = ({
   theme = applicationTheme,
 }) => {
   return (
-    <ThemeProvider theme={theme} isStandalone>
-      <Fragment>{children}</Fragment>
-    </ThemeProvider>
+    <StoreContextProvider>
+      <ThemeProvider theme={theme} isStandalone>
+        <Fragment>{children}</Fragment>
+      </ThemeProvider>
+    </StoreContextProvider>
   )
 }
 
@@ -41,6 +44,7 @@ export const applicationTheme = defaultTheme({
       #root {
         margin: 0;
         height: 100vh;
+        color: #121212;
       }
     `,
   },
