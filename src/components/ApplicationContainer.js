@@ -1,8 +1,8 @@
 import React, { Fragment } from "react"
 import { HashRouter, Route, Switch } from "react-router-dom"
 import { ThemeProvider, css, defaultTheme } from "fannypack"
-import { SelectionTiles } from "../pages"
 import { StoreContextProvider } from "../store"
+import { FormDesigner, TileSelector } from "../pages"
 
 export default () => {
   return (
@@ -16,7 +16,8 @@ export const ApplicationRoutes = () => {
   return (
     <HashRouter>
       <Switch>
-        <Route exact path="/" component={SelectionTiles} />
+        <Route exact path="/" component={TileSelector} />
+        <Route path="/form" component={FormDesigner} />
       </Switch>
     </HashRouter>
   )
@@ -53,4 +54,11 @@ export const applicationTheme = defaultTheme({
       border-radius: 0;
     `,
   },
+  Heading: {
+    base: css`
+      font-family: "open sans condensed", sans-serif;
+      font-size: 22px;
+      color: #121212;
+    `
+  }
 })
