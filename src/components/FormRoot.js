@@ -41,7 +41,7 @@ export const FormObject = ({ node, path }) => {
 export const FormArray = ({ items, path }) => {
   const { registry, queryComponent } = useContext(FormContext)
   return items.map((item, index) => (
-    <Fragment key={index}>
+    <Fragment key={`${path}[${index}]`}>
       <Box
         use={queryComponent(registry, "FormObject", item)}
         node={item}

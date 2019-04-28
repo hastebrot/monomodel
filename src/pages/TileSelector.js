@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import { Box, Pane, Flex, Set, Heading, Text, Link } from "fannypack"
 import useStoreon from "storeon/react"
 import useReactRouter from "use-react-router"
+import useLocalStorage from "react-use/lib/useLocalStorage"
 import { round } from "lodash"
 import { DateTime } from "luxon"
 import "typeface-open-sans"
@@ -10,24 +11,40 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 import { faFileAlt } from "@fortawesome/free-regular-svg-icons"
 import { FORMS_CREATE } from "../store/forms"
+import { orderSchema, taskSchema } from "./FormDesigner"
 
 export default ({ ...otherProps }) => {
   const { history, location, match } = useReactRouter()
   const { dispatch, forms } = useStoreon("forms")
-  const [tiles, setTiles] = useState(null)
+  const currentVersion = 3
+  const [version, setVersion] = useLocalStorage(
+    "monomodel.version",
+    currentVersion
+  )
+  const [tiles, setTiles] = useLocalStorage("monomodel.tiles", null)
+
+  useEffect(() => {
+    if (version !== currentVersion) {
+      setVersion(currentVersion)
+      setTiles([
+        {
+          id: 1,
+          name: "orderSchema form",
+          updatedAt: DateTime.local(2019, 4, 27, 12, 0, 0).toISO(),
+          schema: orderSchema,
+        },
+        {
+          id: 2,
+          name: "taskSchema form",
+          updatedAt: DateTime.local(2019, 4, 1, 12, 0, 0).toISO(),
+          schema: taskSchema,
+        },
+      ])
+    }
+  }, [version])
 
   useEffect(() => {
     dispatch(FORMS_CREATE)
-    setTiles([
-      {
-        name: "orderSchema form",
-        updatedAt: DateTime.local(2019, 4, 27, 12, 0, 0),
-      },
-      {
-        name: "taskSchema form",
-        updatedAt: DateTime.local(2019, 4, 1, 12, 0, 0),
-      },
-    ])
   }, [])
 
   return (
@@ -55,7 +72,7 @@ export default ({ ...otherProps }) => {
               history.push({ pathname: "/form" })
             }}
           >
-            <Link href="#/form">
+            <Link href={`#/form`}>
               <Flex row justifyContent="center">
                 <Box paddingRight="major-1">
                   <FontAwesomeIcon icon={faPlusCircle} size="lg" />
@@ -67,13 +84,14 @@ export default ({ ...otherProps }) => {
           {tiles &&
             tiles.map(tile => {
               const now = DateTime.local()
-              const durationText = formatDuration(now.diff(tile.updatedAt))
+              const past = DateTime.fromISO(tile.updatedAt)
+              const durationText = formatDuration(now.diff(past))
               return (
                 <Tile
                   key={tile.name}
                   cursor="pointer"
                   onClick={() => {
-                    history.push({ pathname: "/form" })
+                    history.push({ pathname: `/form/${tile.id}` })
                   }}
                 >
                   <Flex column alignItems="center">
@@ -81,7 +99,7 @@ export default ({ ...otherProps }) => {
                       <FontAwesomeIcon icon={faFileAlt} size="lg" />
                     </Box>
                     <Box marginTop="minor-1" marginBottom="minor-1">
-                      <Link href="#/form">{tile.name}</Link>
+                      <Link href={`#/form/${tile.id}`}>{tile.name}</Link>
                     </Box>
                     <Text use="small" className="small">
                       {durationText}
