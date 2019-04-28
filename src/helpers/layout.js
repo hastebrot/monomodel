@@ -4,7 +4,11 @@ import { produce } from "immer"
 
 export const UseGridPositionsDemo = () => {
   const { items, setItems, toItemProps, containerProps } = useGridPositions({
-    containerSize: { w: 2, h: 4 },
+    container: {
+      size: { w: 2, h: 4 },
+      gaps: { x: 16, y: 16 },
+      rowHeight: 50,
+    },
     initialItems: [
       { id: 0, text: "0", bounds: { y: 0, x: 0, h: 1, w: 2 } },
       { id: 1, text: "1", bounds: { y: 1, x: 0, h: 1, w: 1 } },
@@ -42,30 +46,45 @@ export const UseGridPositionsDemo = () => {
   )
 }
 
-export const useGridPositions = ({ initialItems, containerSize }) => {
+export const useGridPositions = ({ initialItems, container }) => {
+  const pixels = value => `${value}px`
+  const percentage = value => `${value * 100}%`
+  const translate = (x, y) => `translate(${x}, ${y})`
   const [items, setItems] = useState(initialItems)
-  const verticalScaleFactor = 50
   return {
     containerProps: {
       position: "relative",
-      width: "100%",
-      height: `${containerSize.h * verticalScaleFactor}px`,
+      width: `calc(${percentage(1)} + ${pixels(container.gaps.x)}`,
+      height: pixels(
+        container.gaps.y * (container.size.h - 1) +
+          container.size.h * container.rowHeight
+      ),
+      marginRight: `-${pixels(container.gaps.x)}`,
     },
     items,
     setItems,
     toItemProps: id => {
       const item = items.find(item => item.id === id)
       const itemBounds = {
-        x: (item.bounds.x / containerSize.w) / (item.bounds.w / containerSize.w),
-        y: (item.bounds.y / containerSize.h) * (containerSize.h * verticalScaleFactor),
-        w: item.bounds.w / containerSize.w,
-        h: item.bounds.h * verticalScaleFactor,
+        x:
+          item.bounds.x / container.size.w / (item.bounds.w / container.size.w),
+        y:
+          item.bounds.y * container.gaps.y +
+          (item.bounds.y / container.size.h) *
+            (container.size.h * container.rowHeight),
+        w: item.bounds.w / container.size.w,
+        h: item.bounds.h * container.rowHeight,
       }
       return {
         position: "absolute",
-        width: `${itemBounds.w * 100}%`,
-        height: `${itemBounds.h}px`,
-        transform: `translate(${itemBounds.x * 100}%, ${itemBounds.y}px)`,
+        width: `calc(${percentage(itemBounds.w)} - ${pixels(container.gaps.x)})`,
+        height: pixels(itemBounds.h),
+        // transform: translate(percentage(itemBounds.x), pixels(itemBounds.y)),
+        transform: `
+          translateX(${percentage(itemBounds.x)})
+          ${item.bounds.x === 0 ? "" : `translateX(${pixels(container.gaps.x)})`}
+          translateY(${pixels(itemBounds.y)})
+        `
       }
     },
   }
@@ -106,6 +125,7 @@ export const UseGridColumnsDemo = () => {
               padding="10px"
               border="1px solid #ccc"
               backgroundColor="#fff"
+              height="50px"
               {...toItemProps(item.id)}
             >
               {item.text}
