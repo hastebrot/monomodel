@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
 import { UseGridColumnsDemo, UseGridPositionsDemo } from "../helpers/layout"
+import { FormMutationDemoOne } from "../helpers/layoutDemo"
 
 const stories = storiesOf("helpers/layout", module)
 
@@ -22,5 +23,11 @@ stories.add("useGridColumns", () => (
 stories.add("useGridPositions", () => (
   <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
     <UseGridPositionsDemo />
+  </Box>
+))
+
+stories.add("form mutation demo one", () => (
+  <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
+    <FormMutationDemoOne />
   </Box>
 ))
