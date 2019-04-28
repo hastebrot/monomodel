@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect, useContext } from "react"
 import { produce } from "immer"
 import { get } from "lodash-es"
 import { Box, Flex, Heading, Text, InputField } from "fannypack"
-import { List, arrayMove } from "react-movable"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faTrashAlt,
@@ -28,7 +27,6 @@ export default ({
   const localTheme = defaultLocalTheme()
   const formContext = defaultFormContext(
     produce(context => {
-      context.registry.FormArray = EditorFormArray
       context.registry.FormPart = EditorFormPart
       context.formModel = formModel
       context.setFormModel = setFormModel
@@ -55,51 +53,18 @@ export default ({
   )
 }
 
-export const EditorFormArray = ({ items, path }) => {
-  const { registry, queryComponent, setFormModel } = useContext(FormContext)
-  return (
-    <List
-      lockVertically
-      _transitionDuration={0}
-      values={items}
-      onChange={({ oldIndex, newIndex }) => {
-        setFormModel(
-          produce(formModel => {
-            const array = get({ root: formModel }, path)
-            arrayMoveMutate(array, oldIndex, newIndex)
-          })
-        )
-      }}
-      renderList={({ children, props }) => {
-        return <Box {...props}>{children}</Box>
-      }}
-      renderItem={({ value, index, props }) => {
-        return (
-          <Box {...props} key={`${value.pointer}@${index}`}>
-            <Box
-              use={queryComponent(registry, "FormObject", value)}
-              node={value}
-              path={`${path}[${index}]`}
-            />
-          </Box>
-        )
-      }}
-    />
-  )
-}
-
 export const EditorFormPart = ({ node, path, children }) => {
   const context = useContext(FormContext)
 
   const onSelectClick = event => {
-    // context.setFormPrefs(
-    //   produce(formPrefs => {
-    //     const selectedFieldset =
-    //       formPrefs.selectedFieldset === path ? null : path
-    //     formPrefs.selectedFieldset = selectedFieldset
-    //   })
-    // )
-    // event.stopPropagation()
+    context.setFormPrefs(
+      produce(formPrefs => {
+        const selectedFieldset =
+          formPrefs.selectedFieldset === path ? null : path
+        formPrefs.selectedFieldset = selectedFieldset
+      })
+    )
+    event.stopPropagation()
   }
   const isSelected = path === context.formPrefs.selectedFieldset
   const isFieldSelected = path.includes(context.formPrefs.selectedFieldset)
@@ -168,7 +133,7 @@ export const EditorFormPart = ({ node, path, children }) => {
         )}
         <Box
           {...rowPadding("16px")}
-          _onClick={onSelectClick}
+          onClick={onSelectClick}
           backgroundColor={isSelected ? "#fbd9d2" : undefined}
         >
           {header && (
