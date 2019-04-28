@@ -29,33 +29,90 @@ export const FormDemoOne = () => {
 export const FormDemoTwo = () => {
   const formModel = buildFlatModel(orderSchema)
   const formRegistry = {
+    FormArray: EditorFormArrayGrid,
     FormPart: EditorFormPart,
   }
+  return <FormViewer model={formModel} registry={formRegistry} />
+}
+
+export const EditorFormArrayGrid = ({ items, path }) => {
+  const { registry, queryComponent, setFormModel } = useContext(FormContext)
   const gridOptions = {
-    width: 600,
+    width: 550,
     cols: 6,
-    rowHeight: 60,
+    rowHeight: 65,
     margin: [16, 16],
     containerPadding: [0, 0],
-    compactType: "horizontal",
-    layout: [
-      { i: "a", x: 0, y: 0, w: 1, h: 1, static: true },
-      { i: "b", x: 1, y: 0, w: 3, h: 1, minW: 2, maxW: 4 },
-      { i: "c", x: 4, y: 0, w: 1, h: 1 },
-    ],
+    compactType: null,
   }
   return (
-    <GridLayout {...gridOptions}>
-      {gridOptions.layout.map(item => (
-        <Flex key={item.i}>
-          <Box background="#ccc" flex="1" padding="major-1">
-            {item.i}
-          </Box>
-        </Flex>
-      ))}
-    </GridLayout>
+    <Fragment>
+      <Box>
+        {items[0] && items[0].type === "field" && (
+          <GridLayout style={{ marginBottom: "16px" }} {...gridOptions}>
+            {items.map((item, index) => (
+              <Box
+                key={`${item.pointer}@${index}`}
+                data-grid={{ x: 0, y: 0, w: 3, h: 1, minW: 3, maxH: 2 }}
+              >
+                <Box
+                  use={queryComponent(registry, "FormObject", item)}
+                  node={item}
+                  path={`${path}[${index}]`}
+                />
+              </Box>
+            ))}
+          </GridLayout>
+        )}
+      </Box>
+      {items[0] && items[0].type !== "field" && (
+        <Fragment>
+          {items.map((item, index) => (
+            <Box key={`${item.pointer}@${index}`}>
+              <Box
+                use={queryComponent(registry, "FormObject", item)}
+                node={item}
+                path={`${path}[${index}]`}
+              />
+            </Box>
+          ))}
+        </Fragment>
+      )}
+    </Fragment>
   )
-  // return <FormViewer model={formModel} registry={formRegistry} />
+}
+
+export const EditorFormArray = ({ items, path }) => {
+  const { registry, queryComponent, setFormModel } = useContext(FormContext)
+  return (
+    <List
+      lockVertically
+      _transitionDuration={0}
+      values={items}
+      onChange={({ oldIndex, newIndex }) => {
+        setFormModel(
+          produce(formModel => {
+            const array = get({ root: formModel }, path)
+            arrayMoveMutate(array, oldIndex, newIndex)
+          })
+        )
+      }}
+      renderList={({ children, props }) => {
+        return <Box {...props}>{children}</Box>
+      }}
+      renderItem={({ value, index, props }) => {
+        return (
+          <Box {...props} key={`${value.pointer}@${index}`}>
+            <Box
+              use={queryComponent(registry, "FormObject", value)}
+              node={value}
+              path={`${path}[${index}]`}
+            />
+          </Box>
+        )
+      }}
+    />
+  )
 }
 
 export const FormDemoThree = () => {
@@ -95,39 +152,6 @@ export const FormViewer = ({
   )
 }
 
-export const EditorFormArray = ({ items, path }) => {
-  const { registry, queryComponent, setFormModel } = useContext(FormContext)
-  return (
-    <List
-      lockVertically
-      _transitionDuration={0}
-      values={items}
-      onChange={({ oldIndex, newIndex }) => {
-        setFormModel(
-          produce(formModel => {
-            const array = get({ root: formModel }, path)
-            arrayMoveMutate(array, oldIndex, newIndex)
-          })
-        )
-      }}
-      renderList={({ children, props }) => {
-        return <Box {...props}>{children}</Box>
-      }}
-      renderItem={({ value, index, props }) => {
-        return (
-          <Box {...props} key={`${value.pointer}@${index}`}>
-            <Box
-              use={queryComponent(registry, "FormObject", value)}
-              node={value}
-              path={`${path}[${index}]`}
-            />
-          </Box>
-        )
-      }}
-    />
-  )
-}
-
 export const EditorFormPart = ({ node, path, children }) => {
   const context = useContext(FormContext)
 
@@ -151,6 +175,7 @@ export const EditorFormPart = ({ node, path, children }) => {
       <DropBox>
         <Box
           {...rowPadding("16px")}
+          backgroundColor="#fff"
           border={`1px solid ${node.pointer ? "red" : "red"}`}
           cursor="move"
         >
@@ -169,7 +194,7 @@ export const EditorFormPart = ({ node, path, children }) => {
   if (node.type === "field") {
     return (
       <DragBox>
-        <Box marginBottom="16px" border="1px solid blue">
+        <Box marginBottom="16px" border="1px solid blue" backgroundColor="#fff">
           <InputField
             label={node.pointer.split("/").slice(-1)[0]}
             defaultValue={node.pointer}
