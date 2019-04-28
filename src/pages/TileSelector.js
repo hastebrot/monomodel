@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState, useRef } from "react"
 import { Box, Pane, Flex, Set, Heading, Text, Link } from "fannypack"
 import useStoreon from "storeon/react"
 import useReactRouter from "use-react-router"
@@ -12,12 +12,13 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 import { faFileAlt } from "@fortawesome/free-regular-svg-icons"
 import { FORMS_CREATE } from "../store/forms"
 import { orderSchema, taskSchema } from "./FormDesigner"
+import html2canvas from "html2canvas"
 
 export default ({ ...otherProps }) => {
+  const ref = useRef(null)
   const { history, location, match } = useReactRouter()
   const { dispatch, forms } = useStoreon("forms")
   const currentVersion = 3
-  const currentVersion = 1
   const [version, setVersion] = useLocalStorage(
     "monomodel.version",
     currentVersion
@@ -48,6 +49,14 @@ export default ({ ...otherProps }) => {
     dispatch(FORMS_CREATE)
   }, [])
 
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     html2canvas(ref.current).then(function(canvas) {
+  //       document.body.appendChild(canvas)
+  //     })
+  //   }
+  // }, [ref.current])
+
   return (
     <Box
       backgroundColor="#f7f7f8"
@@ -63,6 +72,7 @@ export default ({ ...otherProps }) => {
         padding="major-5"
         fontFamily="open sans"
         maxWidth="1080px"
+        minHeight="640px"
       >
         <Heading use="h2">form selection</Heading>
         <Set isFilled spacing="major-3" marginTop="major-3">
