@@ -14,10 +14,18 @@ import { object, array, string, integer, number } from "../helpers/model"
 import { buildFlatModel } from "../helpers/builder"
 import { pretty } from "../helpers/utils"
 
-export const FormMutationDemoOne = () => {
+export const FormDemoOne = () => {
   const formModel = buildFlatModel(orderSchema)
   const formRegistry = {
     FormArray: EditorFormArray,
+    FormPart: EditorFormPart,
+  }
+  return <FormViewer model={formModel} registry={formRegistry} />
+}
+
+export const FormDemoTwo = () => {
+  const formModel = buildFlatModel(orderSchema)
+  const formRegistry = {
     FormPart: EditorFormPart,
   }
   return <FormViewer model={formModel} registry={formRegistry} />
@@ -105,7 +113,7 @@ export const EditorFormPart = ({ node, path, children }) => {
 
   if (node.type === "fieldset") {
     return (
-      <Box>
+      <DropBox>
         <Box {...rowPadding("16px")}>
           {header && (
             <Box {...rowPadding("16px")} paddingBottom="8px">
@@ -116,12 +124,12 @@ export const EditorFormPart = ({ node, path, children }) => {
           )}
           {children && <Box {...rowPadding("16px")}>{children}</Box>}
         </Box>
-      </Box>
+      </DropBox>
     )
   }
   if (node.type === "field") {
     return (
-      <Box>
+      <DragBox>
         <Box paddingBottom="16px">
           <InputField
             label={node.pointer.split("/").slice(-1)[0]}
@@ -129,10 +137,22 @@ export const EditorFormPart = ({ node, path, children }) => {
             readOnly
           />
         </Box>
-      </Box>
+      </DragBox>
     )
   }
   throw new Error("node.type handler not defined")
+}
+
+export const DropBox = ({ children, name, ...otherProps }) => {
+  return <Box {...otherProps}>{children}</Box>
+}
+
+export const DragBox = ({ children, name, ...otherProps }) => {
+  return (
+    <Box draggable {...otherProps}>
+      {children}
+    </Box>
+  )
 }
 
 const arrayMoveMutate = (array, indexFrom, indexTo) => {

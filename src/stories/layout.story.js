@@ -1,33 +1,53 @@
 import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
-import { Box, ThemeProvider } from "fannypack"
+import { Box, Heading, ThemeProvider } from "fannypack"
 import { UseGridColumnsDemo, UseGridPositionsDemo } from "../helpers/layout"
-import { FormMutationDemoOne } from "../helpers/layoutDemo"
+import { FormDemoOne, FormDemoTwo } from "../helpers/layoutDemo"
 
 const stories = storiesOf("helpers/layout", module)
 
-stories.addDecorator(story => (
-  <ThemeProvider>
-    <Box padding="major-6" background="#f7f7f8">
-      {story()}
-    </Box>
-  </ThemeProvider>
-))
+stories.addDecorator(story => <ThemeProvider>{story()}</ThemeProvider>)
 
-stories.add("useGridColumns", () => (
-  <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
+stories.add("useGridColumns()", () => (
+  <Playground title="useGridColumns()">
     <UseGridColumnsDemo />
-  </Box>
+  </Playground>
 ))
 
-stories.add("useGridPositions", () => (
-  <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
+stories.add("useGridPositions()", () => (
+  <Playground title="useGridPositions()">
     <UseGridPositionsDemo />
-  </Box>
+  </Playground>
 ))
 
-stories.add("form mutation demo one", () => (
-  <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
-    <FormMutationDemoOne />
-  </Box>
+stories.add("form demo: move fieldset", () => (
+  <Playground title="form demo: move fieldset">
+    <FormDemoOne />
+  </Playground>
 ))
+
+stories.add("form demo: move field within fieldset", () => (
+  <Playground title="form demo: move field within fieldset">
+    <FormDemoTwo />
+  </Playground>
+))
+
+export const Playground = ({ title, children }) => {
+  return (
+    <Box padding="major-5" background="#f7f7f8">
+      <Box padding="major-2" background="#ffffff" border="1px solid #cccccc">
+        {title && (
+          <Heading
+            use="h2"
+            fontFamily="open sans condensed"
+            fontSize="26px"
+            color="#121212"
+          >
+            {title}
+          </Heading>
+        )}
+        {children}
+      </Box>
+    </Box>
+  )
+}
