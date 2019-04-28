@@ -147,6 +147,11 @@ export const localTheme = {
       height: 40px;
       padding: 0 15px;
     `,
+    focus: css`
+      outline: unset !important;
+      box-shadow: unset !important;
+      border: unset;
+    `,
   },
 }
 

@@ -3,6 +3,9 @@ import { produce } from "immer"
 import { get } from "lodash-es"
 import { Box, Flex, Heading, Text, InputField } from "fannypack"
 import { List, arrayMove } from "react-movable"
+import GridLayout from "react-grid-layout"
+import "react-grid-layout/css/styles.css"
+import "react-resizable/css/styles.css"
 import {
   FormRoot,
   FormContext,
@@ -10,7 +13,7 @@ import {
   defaultFormContext,
   defaultLocalTheme,
 } from "../components/FormRoot"
-import { object, array, string, integer, number } from "../helpers/model"
+import { object, array, string, boolean, number } from "../helpers/model"
 import { buildFlatModel } from "../helpers/builder"
 import { pretty } from "../helpers/utils"
 
@@ -24,6 +27,38 @@ export const FormDemoOne = () => {
 }
 
 export const FormDemoTwo = () => {
+  const formModel = buildFlatModel(orderSchema)
+  const formRegistry = {
+    FormPart: EditorFormPart,
+  }
+  const gridOptions = {
+    width: 600,
+    cols: 6,
+    rowHeight: 60,
+    margin: [16, 16],
+    containerPadding: [0, 0],
+    compactType: "horizontal",
+    layout: [
+      { i: "a", x: 0, y: 0, w: 1, h: 1, static: true },
+      { i: "b", x: 1, y: 0, w: 3, h: 1, minW: 2, maxW: 4 },
+      { i: "c", x: 4, y: 0, w: 1, h: 1 },
+    ],
+  }
+  return (
+    <GridLayout {...gridOptions}>
+      {gridOptions.layout.map(item => (
+        <Flex key={item.i}>
+          <Box background="#ccc" flex="1" padding="major-1">
+            {item.i}
+          </Box>
+        </Flex>
+      ))}
+    </GridLayout>
+  )
+  // return <FormViewer model={formModel} registry={formRegistry} />
+}
+
+export const FormDemoThree = () => {
   const formModel = buildFlatModel(orderSchema)
   const formRegistry = {
     FormPart: EditorFormPart,
@@ -114,7 +149,11 @@ export const EditorFormPart = ({ node, path, children }) => {
   if (node.type === "fieldset") {
     return (
       <DropBox>
-        <Box {...rowPadding("16px")}>
+        <Box
+          {...rowPadding("16px")}
+          border={`1px solid ${node.pointer ? "red" : "red"}`}
+          cursor="move"
+        >
           {header && (
             <Box {...rowPadding("16px")} paddingBottom="8px">
               <Heading use="h2" paddingTop="8px" paddingBottom="8px">
@@ -130,7 +169,7 @@ export const EditorFormPart = ({ node, path, children }) => {
   if (node.type === "field") {
     return (
       <DragBox>
-        <Box paddingBottom="16px">
+        <Box marginBottom="16px" border="1px solid blue">
           <InputField
             label={node.pointer.split("/").slice(-1)[0]}
             defaultValue={node.pointer}

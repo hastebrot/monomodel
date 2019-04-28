@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, Heading, ThemeProvider } from "fannypack"
 import { UseGridColumnsDemo, UseGridPositionsDemo } from "../helpers/layout"
-import { FormDemoOne, FormDemoTwo } from "../helpers/layoutDemo"
+import { FormDemoOne, FormDemoTwo, FormDemoThree } from "../helpers/layoutDemo"
 
 const stories = storiesOf("helpers/layout", module)
 
@@ -21,14 +21,20 @@ stories.add("useGridPositions()", () => (
 ))
 
 stories.add("form demo: move fieldset", () => (
-  <Playground title="form demo: move fieldset">
+  <Playground title="form demo: move fieldset (red)">
     <FormDemoOne />
   </Playground>
 ))
 
 stories.add("form demo: move field within fieldset", () => (
-  <Playground title="form demo: move field within fieldset">
+  <Playground title="form demo: move field (blue) within fieldset (red)">
     <FormDemoTwo />
+  </Playground>
+))
+
+stories.add("form demo: move field from fieldset to fieldset sibling", () => (
+  <Playground title="form demo: move field (blue) from fieldset (red) to fieldset sibling (red)">
+    <FormDemoThree />
   </Playground>
 ))
 
