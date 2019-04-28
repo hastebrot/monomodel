@@ -17,7 +17,7 @@ export const ApplicationRoutes = () => {
     <HashRouter>
       <Switch>
         <Route exact path="/" component={TileSelector} />
-        <Route path="/form" component={FormDesigner} />
+        <Route path="/form/:formId" component={FormDesigner} />
       </Switch>
     </HashRouter>
   )

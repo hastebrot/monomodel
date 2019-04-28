@@ -1,12 +1,34 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Box } from "fannypack"
+import useReactRouter from "use-react-router"
+import useLocalStorage from "react-use/lib/useLocalStorage"
 import FormEditor from "../components/FormEditor"
 import { buildModel, buildFlatModel } from "../helpers/builder"
-import { object, array, string, integer, number } from "../helpers/model"
+import {
+  object,
+  array,
+  string,
+  boolean,
+  integer,
+  number,
+} from "../helpers/model"
+import { pretty } from "../helpers/utils"
 
 export default ({ nested = false, ...otherProps }) => {
+  const { history, location, match } = useReactRouter()
+  const [tiles, setTiles] = useLocalStorage("monomodel.tiles", null)
+
+  const [formModel, setFormModel] = useState(null)
   const formPrefs = createFormPrefs()
-  const formModel = nested ? buildModel(orderSchema) : buildFlatModel(orderSchema)
+  useEffect(() => {
+    if (tiles) {
+      const tile = tiles.find(tile => String(tile.id) === match.params.formId)
+      const formModel = nested
+        ? buildModel(tile.schema)
+        : buildFlatModel(tile.schema)
+      setFormModel(formModel)
+    }
+  }, [tiles])
 
   return (
     <Box
@@ -24,7 +46,7 @@ export default ({ nested = false, ...otherProps }) => {
         maxWidth="1080px"
         margin="0 auto"
       >
-        <FormEditor model={formModel} prefs={formPrefs} />
+        {formModel && <FormEditor model={formModel} prefs={formPrefs} />}
       </Box>
     </Box>
   )
@@ -91,7 +113,7 @@ const createFormPrefs = () => {
   return formPrefs
 }
 
-const orderSchema = object({
+export const orderSchema = object({
   $schema: "http://json-schema.org/schema#",
   title: "order",
   properties: {
@@ -126,5 +148,36 @@ const orderSchema = object({
       },
     }),
     totalPrice: number(),
+  },
+})
+
+export const taskSchema = object({
+  title: "A list of tasks",
+  required: ["title"],
+  properties: {
+    title: string({
+      title: "Task list title",
+    }),
+    tasks: array({
+      title: "Tasks",
+      items: object({
+        title: "Task",
+        required: ["title"],
+        properties: {
+          title: string({
+            title: "Title",
+            description: "A sample title",
+          }),
+          details: string({
+            title: "Task details",
+            description: "Enter the task details",
+          }),
+          done: boolean({
+            title: "Done?",
+            default: false,
+          }),
+        },
+      }),
+    }),
   },
 })
