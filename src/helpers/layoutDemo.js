@@ -213,7 +213,7 @@ export const DropBox = ({ children, name, ...otherProps }) => {
 
 export const DragBox = ({ children, name, ...otherProps }) => {
   return (
-    <Box draggable {...otherProps}>
+    <Box _draggable {...otherProps}>
       {children}
     </Box>
   )
