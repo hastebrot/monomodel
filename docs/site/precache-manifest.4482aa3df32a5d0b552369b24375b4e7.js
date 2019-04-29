@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "607573da8bfc6ee96ff0d4dff7bac355",
+    "revision": "9ebe2abb1e66b5fac55ff86e629bdca9",
     "url": "/monomodel/site/index.html"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/monomodel/site/static/js/3.be241952.chunk.js"
   },
   {
-    "revision": "90006fd78939e8e1c62c",
-    "url": "/monomodel/site/static/js/main.c0d6d6f8.chunk.js"
+    "revision": "c7612ed480abe111107e",
+    "url": "/monomodel/site/static/js/main.afb7b270.chunk.js"
   },
   {
     "revision": "480b85c687a340e9c552",
