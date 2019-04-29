@@ -16,7 +16,7 @@ module.exports = function({ env, paths }) {
         paths.appBuild = path.resolve(paths.appBuild, "../docs/site")
         if (env === "production") {
           webpackConfig.output.path = paths.appBuild
-          webpackConfig.output.publicPath = "/site/"
+          webpackConfig.output.publicPath = "/monomodel/site/"
           // webpackConfig.output.filename = "bundle.js"
         }
         return webpackConfig
