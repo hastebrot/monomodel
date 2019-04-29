@@ -43,7 +43,7 @@ export const EditorFormArrayGrid = ({ items, path }) => {
     rowHeight: 65,
     margin: [16, 16],
     containerPadding: [0, 0],
-    compactType: null,
+    compactType: "vertical",
   }
   return (
     <Fragment>
