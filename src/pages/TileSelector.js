@@ -21,14 +21,14 @@ export default ({ ...otherProps }) => {
   const currentVersion = 3
   const [version, setVersion] = useLocalStorage(
     "monomodel.version",
-    currentVersion
+    null
   )
-  const [tiles, setTiles] = useLocalStorage("monomodel.tiles", null)
+  const [localForms, setLocalForms] = useLocalStorage("monomodel.forms", [])
 
   useEffect(() => {
     if (version !== currentVersion) {
       setVersion(currentVersion)
-      setTiles([
+      setLocalForms([
         {
           id: 1,
           name: "orderSchema form",
@@ -92,17 +92,17 @@ export default ({ ...otherProps }) => {
               </Flex>
             </Link>
           </Tile>
-          {tiles &&
-            tiles.map(tile => {
+          {localForms &&
+            localForms.map(form => {
               const now = DateTime.local()
-              const past = DateTime.fromISO(tile.updatedAt)
+              const past = DateTime.fromISO(form.updatedAt)
               const durationText = formatDuration(now.diff(past))
               return (
                 <Tile
-                  key={tile.name}
+                  key={form.name}
                   cursor="pointer"
                   onClick={() => {
-                    history.push({ pathname: `/form/${tile.id}` })
+                    history.push({ pathname: `/form/${form.id}` })
                   }}
                 >
                   <Flex column alignItems="center">
@@ -110,7 +110,7 @@ export default ({ ...otherProps }) => {
                       <FontAwesomeIcon icon={faFileAlt} size="lg" />
                     </Box>
                     <Box marginTop="minor-1" marginBottom="minor-1">
-                      <Link href={`#/form/${tile.id}`}>{tile.name}</Link>
+                      <Link href={`#/form/${form.id}`}>{form.name}</Link>
                     </Box>
                     <Text use="small" className="small">
                       {durationText}
