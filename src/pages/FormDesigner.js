@@ -16,19 +16,19 @@ import { pretty } from "../helpers/utils"
 
 export default ({ nested = false, ...otherProps }) => {
   const { history, location, match } = useReactRouter()
-  const [tiles, setTiles] = useLocalStorage("monomodel.tiles", null)
+  const [localForms, setLocalForms] = useLocalStorage("monomodel.forms", null)
 
   const [formModel, setFormModel] = useState(null)
   const formPrefs = createFormPrefs()
   useEffect(() => {
-    if (tiles) {
-      const tile = tiles.find(tile => String(tile.id) === match.params.formId)
+    if (localForms) {
+      const form = localForms.find(form => String(form.id) === match.params.formId)
       const formModel = nested
-        ? buildModel(tile.schema)
-        : buildFlatModel(tile.schema)
+        ? buildModel(form.schema)
+        : buildFlatModel(form.schema)
       setFormModel(formModel)
     }
-  }, [tiles])
+  }, [localForms])
 
   return (
     <Box
