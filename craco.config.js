@@ -1,3 +1,4 @@
+const path = require("path")
 const babel = require("./babel.config.js")
 
 module.exports = function({ env, paths }) {
@@ -9,6 +10,17 @@ module.exports = function({ env, paths }) {
     babel: babel,
     eslint: {
       enable: false,
+    },
+    webpack: {
+      configure: (webpackConfig, { env, paths }) => {
+        paths.appBuild = path.resolve(paths.appBuild, "../docs/site")
+        if (env === "production") {
+          webpackConfig.output.path = paths.appBuild
+          webpackConfig.output.publicPath = "/site/"
+          // webpackConfig.output.filename = "bundle.js"
+        }
+        return webpackConfig
+      },
     },
     jest: {
       configure: {
