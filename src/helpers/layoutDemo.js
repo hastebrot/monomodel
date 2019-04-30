@@ -14,11 +14,11 @@ import {
   defaultLocalTheme,
 } from "../components/FormRoot"
 import { object, array, string, boolean, number } from "../helpers/model"
-import { buildFlatModel } from "../helpers/builder"
+import { buildMetaModelFlat } from "../helpers/builder"
 import { pretty } from "../helpers/utils"
 
 export const FormDemoOne = () => {
-  const formModel = buildFlatModel(orderSchema)
+  const formModel = buildMetaModelFlat(orderSchema)
   const formRegistry = {
     FormArray: EditorFormArray,
     FormPart: EditorFormPart,
@@ -27,7 +27,7 @@ export const FormDemoOne = () => {
 }
 
 export const FormDemoTwo = () => {
-  const formModel = buildFlatModel(orderSchema)
+  const formModel = buildMetaModelFlat(orderSchema)
   const formRegistry = {
     FormArray: EditorFormArrayGrid,
     FormPart: EditorFormPart,
@@ -44,6 +44,22 @@ export const EditorFormArrayGrid = ({ items, path }) => {
     margin: [16, 16],
     containerPadding: [0, 0],
     compactType: "vertical",
+    // onDragStart, onDrag, onDragStop.
+    // onResizeStart, onResize, onResizeStop.
+    onLayoutChange: layout => {
+      console.log("on layout change:", layout)
+    },
+    onDrag: (layout, oldItem, newItem, placeholder, event, element) => {
+      console.log(
+        "on drag start:",
+        layout,
+        oldItem,
+        newItem,
+        placeholder,
+        event,
+        element
+      )
+    },
   }
   return (
     <Fragment>
@@ -116,7 +132,7 @@ export const EditorFormArray = ({ items, path }) => {
 }
 
 export const FormDemoThree = () => {
-  const formModel = buildFlatModel(orderSchema)
+  const formModel = buildMetaModelFlat(orderSchema)
   const formRegistry = {
     FormPart: EditorFormPart,
   }

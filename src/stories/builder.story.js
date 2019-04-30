@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
 import FormEditor from "../components/FormEditor"
-import { buildModel, buildFlatModel } from "../helpers/builder"
+import { buildMetaModelNested, buildMetaModelFlat } from "../helpers/builder"
 import { object, array, string, integer, number } from "../helpers/model"
 
 const stories = storiesOf("components/builder", module)
@@ -22,7 +22,7 @@ stories.addDecorator(story => (
 
 stories.add("flat fieldsets", () => {
   const formPrefs = createFormPrefs()
-  const formModel = buildFlatModel(orderSchema)
+  const formModel = buildMetaModelFlat(orderSchema)
   return (
     <Box
       marginLeft="major-4"
@@ -38,7 +38,7 @@ stories.add("flat fieldsets", () => {
 
 stories.add("nested fieldsets", () => {
   const formPrefs = createFormPrefs()
-  const formModel = buildModel(orderSchema)
+  const formModel = buildMetaModelNested(orderSchema)
   return (
     <Box
       marginLeft="major-4"

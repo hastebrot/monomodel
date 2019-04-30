@@ -3,7 +3,7 @@ import { Box } from "fannypack"
 import useReactRouter from "use-react-router"
 import useLocalStorage from "react-use/lib/useLocalStorage"
 import FormEditor from "../components/FormEditor"
-import { buildModel, buildFlatModel } from "../helpers/builder"
+import { buildMetaModelNested, buildMetaModelFlat } from "../helpers/builder"
 import {
   object,
   array,
@@ -24,8 +24,8 @@ export default ({ nested = false, ...otherProps }) => {
     if (localForms) {
       const form = localForms.find(form => String(form.id) === match.params.formId)
       const formModel = nested
-        ? buildModel(form.schema)
-        : buildFlatModel(form.schema)
+        ? buildMetaModelNested(form.schema)
+        : buildMetaModelFlat(form.schema)
       setFormModel(formModel)
     }
   }, [localForms])

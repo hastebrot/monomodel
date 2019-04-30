@@ -1,6 +1,6 @@
 import {
-  buildModel,
-  buildFlatModel,
+  buildMetaModelNested,
+  buildMetaModelFlat,
   toPointer,
   toObjectPath,
 } from "../helpers/builder"
@@ -15,7 +15,7 @@ import {
 } from "../helpers/model"
 import { pretty1 } from "../helpers/utils"
 
-describe("flat builder", () => {
+describe("builder meta model flat", () => {
   test("schema 1", () => {
     // given:
     const schema = object({
@@ -30,7 +30,7 @@ describe("flat builder", () => {
       ],
     })
     // expect:
-    expect(buildFlatModel(schema)).toEqual(model)
+    expect(buildMetaModelFlat(schema)).toEqual(model)
   })
 
   test("schema 2", () => {
@@ -59,7 +59,7 @@ describe("flat builder", () => {
       ],
     })
     // expect:
-    expect(buildFlatModel(schema)).toEqual(model)
+    expect(buildMetaModelFlat(schema)).toEqual(model)
   })
 
   test("schema 3", () => {
@@ -111,7 +111,7 @@ describe("flat builder", () => {
       ],
     })
     // expect:
-    expect(buildFlatModel(schema)).toEqual(model)
+    expect(buildMetaModelFlat(schema)).toEqual(model)
   })
 
   test("schema 4", () => {
@@ -203,11 +203,11 @@ describe("flat builder", () => {
       ],
     })
     // expect:
-    expect(buildFlatModel(schema)).toEqual(model)
+    expect(buildMetaModelFlat(schema)).toEqual(model)
   })
 })
 
-describe("builder", () => {
+describe("builder meta model nested", () => {
   test("schema 1", () => {
     // given:
     const schema = object({
@@ -218,7 +218,7 @@ describe("builder", () => {
       title: "order",
     })
     // expect:
-    expect(buildModel(schema)).toEqual(model)
+    expect(buildMetaModelNested(schema)).toEqual(model)
   })
 
   test("schema 2", () => {
@@ -243,7 +243,7 @@ describe("builder", () => {
       ],
     })
     // expect:
-    expect(buildModel(schema)).toEqual(model)
+    expect(buildMetaModelNested(schema)).toEqual(model)
   })
 
   test("schema 3", () => {
@@ -291,7 +291,7 @@ describe("builder", () => {
       ],
     })
     // expect:
-    expect(buildModel(schema)).toEqual(model)
+    expect(buildMetaModelNested(schema)).toEqual(model)
   })
 
   test("schema 4", () => {
@@ -376,6 +376,6 @@ describe("builder", () => {
       ],
     })
     // expect:
-    expect(buildModel(schema)).toEqual(model)
+    expect(buildMetaModelNested(schema)).toEqual(model)
   })
 })

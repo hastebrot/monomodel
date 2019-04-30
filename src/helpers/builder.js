@@ -3,10 +3,12 @@ import { schemaWalk } from "@cloudflare/json-schema-walker"
 import { fieldset, field } from "./model"
 import { pretty1 } from "./utils"
 
+// TODO(hastebrot): buildModel() + guestPointers
+
 /**
- * Builds a flat model using a json schema.
+ * Builds a flat meta model using a json schema.
  */
-export const buildFlatModel = schema => {
+export const buildMetaModelFlat = schema => {
   const registry = {
     fieldsetIndex: -1,
     fieldIndex: -1,
@@ -63,9 +65,9 @@ export const buildFlatModel = schema => {
 }
 
 /**
- * Builds a nested model using a json schema.
+ * Builds a nested meta model using a json schema.
  */
-export const buildModel = schema => {
+export const buildMetaModelNested = schema => {
   const registry = {}
   const model = {}
   traverseSchema(schema, (object, parentObject) => {
