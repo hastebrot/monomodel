@@ -75,9 +75,9 @@ export const EditorFormPart = ({ node, path, children }) => {
     ...context.formPrefs[node.pointer],
   }
   const header = node.pointer ? (
-    <Text>
-      {node.title} <Text use="small">{node.pointer}</Text>
-    </Text>
+    <Flex row alignItems="flex-end">
+      <Text _flex="1">{node.title}</Text> <Text use="small">{node.pointer}</Text>
+    </Flex>
   ) : null
 
   const fontSizesHeader = context.formPrefs.options.fontSizesHeader

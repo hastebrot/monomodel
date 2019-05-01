@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react"
 import { Box, ThemeProvider } from "fannypack"
 import FormEditor from "../components/FormEditor"
 import { buildMetaModelNested, buildMetaModelFlat } from "../helpers/builder"
-import { object, array, string, integer, number } from "../helpers/model"
+import { object, array, string, boolean, integer, number } from "../helpers/model"
 
 const stories = storiesOf("components/builder", module)
 
@@ -163,6 +163,65 @@ const jsonSchema = object({
         firstName: string(),
         lastName: string(),
       },
+    }),
+  },
+})
+
+const schema1 = object({
+  title: "Example Schema",
+  properties: {
+    firstName: string(),
+    lastName: string(),
+    age: integer({
+      description: "Age in years",
+      minimum: 0,
+    }),
+    dogs: array({
+      items: string(),
+      maxItems: 4,
+    }),
+    address: object({
+      properties: {
+        street: string(),
+        city: string(),
+        state: string(),
+      },
+      required: ["street", "city"],
+    }),
+    gender: string({
+      enum: ["male", "female"],
+    }),
+    deceased: {
+      enum: ["yes", "no", 1, 0, "true", "false"],
+    },
+  },
+  required: ["firstName", "lastName"],
+})
+
+const schema2 = object({
+  title: "MultipleObjects",
+  id: "foo",
+  oneOf: [
+    { $ref: "#/definitions/ErrorResponse" },
+    { $ref: "#/definitions/VersionGetResponse" },
+  ],
+  definitions: {
+    ErrorResponse: object({
+      title: "Error Response",
+      id: "Error Response",
+      properties: {
+        message: string(),
+        status: integer(),
+      },
+      required: ["message", "status"],
+    }),
+    VersionGetResponse: object({
+      title: "Version Get Response",
+      properties: {
+        local: boolean(),
+        version: string(),
+      },
+      required: ["version"],
     }),
   },
 })

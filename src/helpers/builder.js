@@ -1,9 +1,24 @@
-import { get, set, pick, concat } from "lodash"
+import ptr from "json-ptr"
 import { schemaWalk } from "@cloudflare/json-schema-walker"
+import graphlib, { Graph } from "graphlib"
+import { get, set, pick, concat } from "lodash"
 import { fieldset, field } from "./model"
 import { pretty1 } from "./utils"
 
 // TODO(hastebrot): buildModel() + guestPointers
+
+export const buildModel = (schema, metaModel, data) => {
+  console.log(ptr.flatten(schema))
+
+  const model = metaModel
+  for (const fieldset of model.children) {
+    for (const field of fieldset.children) {
+      console.log(ptr.decode(field.pointer))
+    }
+  }
+
+  return {}
+}
 
 /**
  * Builds a flat meta model using a json schema.
@@ -20,7 +35,10 @@ export const buildMetaModelFlat = schema => {
     const parentPointer = toPointer(parentObject.path)
     const type = object.schema.type
 
-    if (!isFieldsetType(type) && parentPointer !== registry.currentParentPointer) {
+    if (
+      !isFieldsetType(type) &&
+      parentPointer !== registry.currentParentPointer
+    ) {
       registry.fieldsetIndex += 1
       registry.fieldIndex = -1
       registry.currentParentPointer = parentPointer
@@ -31,7 +49,10 @@ export const buildMetaModelFlat = schema => {
       // console.log(pretty1([objectPath, parentPointer]))
 
       const payload = pick(parentObject.schema, ["title"])
-      const node = fieldset(parentObject.schema.type, { pointer: parentPointer, ...payload })
+      const node = fieldset(parentObject.schema.type, {
+        pointer: parentPointer,
+        ...payload,
+      })
       set(model, objectPath, node)
     }
 
@@ -143,3 +164,37 @@ export const traverseSchema = (schema, visitFn) => {
     visitFn(object, parentObject)
   })
 }
+
+const ROOT_POINTER = "#/"
+
+export const buildSchemaGraph = schema => {
+  const isRootPointer = pointer => {
+    return pointer === ROOT_POINTER
+  }
+  const withRoot = pointer => (pointer ? "#" + pointer : ROOT_POINTER)
+  const graph = new Graph({ directed: true, compound: true })
+  schemaWalk(schema, (schemaObject, path, parentSchemaObject, parentPath) => {
+    const schema = schemaObject
+    const pointer = withRoot(ptr.encodePointer(concat(parentPath, path)))
+    const parentPointer = withRoot(ptr.encodePointer(concat(parentPath)))
+    const pointerSegment = ptr.encodePointer(path)
+    graph.setNode(pointer, {
+      schema,
+      pointer,
+      pointerSegment,
+    })
+    if (!(isRootPointer(parentPointer) && isRootPointer(pointer))) {
+      graph.setEdge(parentPointer, pointer)
+    }
+    if (!isRootPointer(pointer)) {
+      graph.setParent(pointer, parentPointer)
+    }
+  })
+  return graph
+}
+
+export const traverseSchemaGraph = (graph, root = ROOT_POINTER) =>
+  graphlib.alg.preorder(graph, root)
+
+export const readSchemaGraph = json => graphlib.json.read(json)
+export const writeSchemaGraph = graph => graphlib.json.write(graph)
