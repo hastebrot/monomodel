@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext } from "react"
 import { produce } from "immer"
 import { get } from "lodash-es"
-import { Box, Flex, Heading, Text, InputField } from "fannypack"
+import { Box, Set, Flex, Heading, Text, InputField } from "fannypack"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faTrashAlt,
@@ -75,9 +75,12 @@ export const EditorFormPart = ({ node, path, children }) => {
     ...context.formPrefs[node.pointer],
   }
   const header = node.pointer ? (
-    <Flex row alignItems="flex-end">
-      <Text _flex="1">{node.title}</Text> <Text use="small">{node.pointer}</Text>
-    </Flex>
+    <Set alignItems="baseline">
+      <Text _flex="1" color="#a11">
+        {node.title}
+      </Text>{" "}
+      <Text use="small">{node.docPointer ? node.docPointer : node.pointer}</Text>
+    </Set>
   ) : null
 
   const fontSizesHeader = context.formPrefs.options.fontSizesHeader
@@ -94,6 +97,16 @@ export const EditorFormPart = ({ node, path, children }) => {
     }
   }
 
+  if (node.type === "context") {
+    return (
+      <Flex row justifyContent="center">
+        <Text color="#a11" fontFamily="open sans" fontSize="15px">
+          {node.title}
+        </Text>
+      </Flex>
+    )
+  }
+
   if (node.type === "fieldset") {
     return (
       <DropBox
@@ -103,7 +116,7 @@ export const EditorFormPart = ({ node, path, children }) => {
         _onDrop={event => onDrop(event, path)}
         position="relative"
       >
-        {isSelected && (
+        {false && isSelected && (
           <Fragment>
             <Flex
               column
@@ -187,7 +200,7 @@ export const EditorFormPart = ({ node, path, children }) => {
         >
           <InputField
             label={node.pointer.split("/").slice(-1)[0]}
-            defaultValue={node.pointer}
+            defaultValue={node.docPointer ? node.docPointer : node.pointer}
             readOnly
           />
         </Box>

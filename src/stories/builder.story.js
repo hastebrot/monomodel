@@ -1,9 +1,20 @@
 import React, { Fragment } from "react"
 import { storiesOf } from "@storybook/react"
-import { Box, ThemeProvider } from "fannypack"
+import { Box, Flex, Heading, ThemeProvider } from "fannypack"
 import FormEditor from "../components/FormEditor"
-import { buildMetaModelNested, buildMetaModelFlat } from "../helpers/builder"
-import { object, array, string, boolean, integer, number } from "../helpers/model"
+import {
+  buildModel,
+  buildMetaModelNested,
+  buildMetaModelFlat,
+} from "../helpers/builder"
+import {
+  object,
+  array,
+  string,
+  boolean,
+  integer,
+  number,
+} from "../helpers/model"
 
 const stories = storiesOf("components/builder", module)
 
@@ -48,6 +59,53 @@ stories.add("nested fieldsets", () => {
       backgroundColor="white"
     >
       <FormEditor model={formModel} prefs={formPrefs} />
+    </Box>
+  )
+})
+
+stories.add("meta model and model", () => {
+  const formPrefs = createFormPrefs()
+  const formMetaModel = buildMetaModelFlat(orderSchema)
+  const formModel = buildModel(orderSchema, formMetaModel, {})
+
+  return (
+    <Box
+      marginLeft="major-4"
+      marginRight="major-1"
+      border="1px solid #cccccc"
+      borderTop="none"
+      backgroundColor="white"
+    >
+      <Flex row>
+        <Box flex="1">
+          <Heading
+            use="h2"
+            fontFamily="open sans condensed"
+            fontSize="26px"
+            color="#121212"
+            paddingLeft="major-2"
+            paddingRight="major-2"
+            paddingTop="major-2"
+          >
+            form meta-model
+          </Heading>
+          <FormEditor model={formMetaModel} prefs={formPrefs} />
+        </Box>
+        <Box flex="1">
+          <Heading
+            use="h2"
+            fontFamily="open sans condensed"
+            fontSize="26px"
+            color="#121212"
+            paddingLeft="major-2"
+            paddingRight="major-2"
+            paddingTop="major-2"
+          >
+            form model
+          </Heading>
+          <FormEditor model={formModel} prefs={formPrefs} />
+        </Box>
+      </Flex>
     </Box>
   )
 })

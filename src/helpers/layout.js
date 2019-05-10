@@ -77,14 +77,18 @@ export const useGridPositions = ({ initialItems, container }) => {
       }
       return {
         position: "absolute",
-        width: `calc(${percentage(itemBounds.w)} - ${pixels(container.gaps.x)})`,
+        width: `calc(${percentage(itemBounds.w)} - ${pixels(
+          container.gaps.x
+        )})`,
         height: pixels(itemBounds.h),
         // transform: translate(percentage(itemBounds.x), pixels(itemBounds.y)),
         transform: `
           translateX(${percentage(itemBounds.x)})
-          ${item.bounds.x === 0 ? "" : `translateX(${pixels(container.gaps.x)})`}
+          ${
+            item.bounds.x === 0 ? "" : `translateX(${pixels(container.gaps.x)})`
+          }
           translateY(${pixels(itemBounds.y)})
-        `
+        `,
       }
     },
   }
@@ -125,7 +129,7 @@ export const UseGridColumnsDemo = () => {
               padding="10px"
               border="1px solid #ccc"
               backgroundColor="#fff"
-              height="50px"
+              height={`${50 + Math.random() * 20}px`}
               {...toItemProps(item.id)}
             >
               {item.text}

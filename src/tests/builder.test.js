@@ -21,8 +21,8 @@ import {
 } from "../helpers/model"
 import { pretty, pretty1 } from "../helpers/utils"
 
-describe.only("builder model", () => {
-  test.only("form assembler", () => {
+describe("builder model", () => {
+  test.skip("form assembler", () => {
     const metaModel = [
       {
         title: "order",
@@ -48,6 +48,7 @@ describe.only("builder model", () => {
 
     const toIndex = (pos, context) =>
       context && context.indices ? context.indices[pos] : 0
+
     const resolutions = {
       "#/": context => `#/`,
       "#/properties/customer": context => `#/customer`,
@@ -66,6 +67,34 @@ describe.only("builder model", () => {
         { productNumber: "9780099477464", quantity: 1 },
       ],
     }
+
+    const expectModel = [
+      {
+        p: "#/",
+        q: "#/",
+        t: "object",
+      },
+      {
+        p: "#/properties/customer",
+        q: "#/customer",
+        t: "object",
+      },
+      {
+        p: "#/properties/orderItems",
+        q: "#/orderItems",
+        t: "array",
+      },
+      {
+        p: "#/properties/orderItems/items",
+        q: "#/orderItems/0",
+        t: "object",
+      },
+      {
+        p: "#/properties/orderItems/items",
+        q: "#/orderItems/1",
+        t: "object",
+      },
+    ]
 
     const model = []
     const context = {}
@@ -93,13 +122,13 @@ describe.only("builder model", () => {
           context[p] = { size: v.length }
         }
       }
-
       index += 1
     }
-    console.log(pretty(model))
+
+    expect(model).toEqual(expectModel)
   })
 
-  test("graph", () => {
+  test("build model", () => {
     const schema = object({
       properties: {
         orderNumber: string(),
@@ -165,104 +194,8 @@ describe.only("builder model", () => {
       ],
     }
 
-    // prepare schema graph
-    // traverse meta model tree
-    // fetch document values
-
-    const graph = buildSchemaGraph(schema)
-    // console.log(pretty(writeSchemaGraph(graph)))
-
-    const rewriteObjectSegment = pointerSegment => {
-      return ptr.decodePointer(pointerSegment).slice(-1)[0]
-    }
-    const rewriteArraySegment = pointerSegment => {
-      return "[]"
-    }
-
-    const registry = {}
-    for (const pointer of traverseSchemaGraph(graph)) {
-      const parentPointer = graph.parent(pointer)
-      const childNode = graph.node(pointer)
-      const parentNode = graph.node(parentPointer)
-
-      if (parentNode && parentNode.schema.type === "object") {
-        const segment = rewriteObjectSegment(childNode.pointerSegment)
-        registry[pointer] = { segment, parentPointer }
-      }
-      if (parentNode && parentNode.schema.type === "array") {
-        const segment = rewriteArraySegment(childNode.pointerSegment)
-        registry[pointer] = { segment, parentPointer }
-      }
-    }
-
-    let currentPointer =
-      "#/properties/orderItems/items/properties/productNumber"
-    const parents = []
-    while (currentPointer) {
-      parents.unshift(currentPointer)
-      currentPointer = registry[currentPointer]
-        ? registry[currentPointer].parentPointer
-        : null
-    }
-    // console.log(parents.map(pointer => registry[pointer] ? registry[pointer].segment : null))
-
-    console.log(ptr.get(document, "/orderItems").length)
-    console.log(ptr.get(document, "/orderItems/0/productNumber"))
-    console.log(ptr.get(document, "/orderItems/0/quantity"))
-
-    const model = []
-
-    for (const fieldset of metaModel.children) {
-      model.push(fieldset)
-      // repeatable fieldset
-      console.log(fieldset.pointer, registry[fieldset.pointer])
-      if (fieldset.children) {
-        for (const field of fieldset.children) {
-          console.log(field.pointer, registry[field.pointer])
-        }
-      }
-    }
-
-    console.log(pretty(model))
-
-    // console.log(pretty(registry))
-
-    // const metaModel = buildMetaModelFlat(schema)
-    // console.log(metaModel)
+    buildModel(schema, metaModel, document)
   })
-  // test("schema 1", () => {
-  //   // given:
-  //   const schema = object({
-  //     title: "order",
-  //     properties: {
-  //       orderNumber: string(),
-  //       orderDate: string(),
-  //     },
-  //   })
-  //   const model = fieldset("array", {
-  //     children: [
-  //       fieldset("object", {
-  //         pointer: "#/",
-  //         title: "order",
-  //         children: [
-  //           field("string", {
-  //             pointer: "#/properties/orderNumber",
-  //           }),
-  //           field("string", {
-  //             pointer: "#/properties/orderDate",
-  //           }),
-  //         ],
-  //       }),
-  //     ],
-  //   })
-  //   // expect:
-  //   const metaModel = buildMetaModelFlat(schema)
-  //   const data = {
-  //     orderNumber: "123abc",
-  //     orderDate: "2001-02-03"
-  //   }
-  //   expect(buildModel(schema, metaModel, data)).toEqual(model)
-  // })
 })
 
 describe("builder meta model flat", () => {
